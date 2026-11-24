@@ -4,1887 +4,1385 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>AI & MLOps 2027 Command Center (3-YOE Edition)</title>
-  <!-- Tailwind CSS CDN -->
   <script src="https://cdn.tailwindcss.com"></script>
-  <!-- Google Fonts: Inter & JetBrains Mono -->
-  <link rel="preconnect" href="https://fonts.googleapis.com" />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@400;500;600;700&display=swap" rel="stylesheet" />
-  <!-- Lucide Icons -->
-  <script src="https://unpkg.com/lucide@latest"></script>
-  <!-- Canvas Confetti CDN -->
   <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
-
   <script>
     tailwind.config = {
       darkMode: 'class',
       theme: {
         extend: {
-          fontFamily: {
-            sans: ['Inter', 'system-ui', 'sans-serif'],
-            mono: ['JetBrains Mono', 'monospace'],
-          },
           colors: {
-            obsidian: '#090D16',
-            cyber: '#4F46E5',
+            slate: { 950: '#070b14', 900: '#0f172a', 850: '#151f36' }
           }
         }
       }
     };
   </script>
-
   <style>
-    body {
-      background-color: #090D16;
-      color: #E2E8F0;
-      font-family: 'Inter', sans-serif;
-      overflow-x: hidden;
-    }
-
-    /* Cyber-indigo & slate subtle grid background */
-    .bg-grid {
-      background-image:
-        radial-gradient(circle at 12% 12%, rgba(99, 102, 241, 0.12) 0%, transparent 42%),
-        radial-gradient(circle at 88% 18%, rgba(6, 182, 212, 0.09) 0%, transparent 40%),
-        radial-gradient(circle at 50% 92%, rgba(16, 185, 129, 0.07) 0%, transparent 45%),
-        linear-gradient(to right, rgba(30, 41, 59, 0.24) 1px, transparent 1px),
-        linear-gradient(to bottom, rgba(30, 41, 59, 0.24) 1px, transparent 1px);
-      background-size: 100% 100%, 100% 100%, 100% 100%, 40px 40px, 40px 40px;
-    }
-
-    /* Glassmorphic Card */
-    .glass-card {
-      background: rgba(15, 23, 42, 0.72);
-      backdrop-filter: blur(14px);
-      -webkit-backdrop-filter: blur(14px);
-      border: 1px solid rgba(51, 65, 85, 0.55);
-    }
-
-    .glass-card-hover:hover {
-      border-color: rgba(129, 140, 248, 0.5);
-      box-shadow: 0 0 28px -8px rgba(99, 102, 241, 0.28);
-    }
-
-    /* Custom Scrollbar */
-    ::-webkit-scrollbar {
-      width: 8px;
-      height: 8px;
-    }
-    ::-webkit-scrollbar-track {
-      background: #090D16;
-    }
-    ::-webkit-scrollbar-thumb {
-      background: #1E293B;
-      border-radius: 9999px;
-    }
-    ::-webkit-scrollbar-thumb:hover {
-      background: #334155;
-    }
-
-    .glow-indigo {
-      box-shadow: 0 0 22px -4px rgba(99, 102, 241, 0.45);
-    }
-    .glow-emerald {
-      box-shadow: 0 0 22px -4px rgba(16, 185, 129, 0.4);
-    }
-
-    /* Custom checkbox */
-    .custom-check {
-      appearance: none;
-      -webkit-appearance: none;
-      width: 19px;
-      height: 19px;
-      border-radius: 6px;
-      border: 1.5px solid #475569;
-      background-color: #0F172A;
-      cursor: pointer;
-      display: inline-flex;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
-      transition: all 0.15s ease;
-    }
-    .custom-check:hover {
-      border-color: #818CF8;
-    }
-    .custom-check:checked {
-      background-color: #10B981;
-      border-color: #10B981;
-      box-shadow: 0 0 12px rgba(16, 185, 129, 0.38);
-    }
-    .custom-check:checked::after {
-      content: "";
-      width: 5px;
-      height: 9px;
-      border: solid #022C22;
-      border-width: 0 2.2px 2.2px 0;
-      transform: rotate(45deg);
-      margin-bottom: 2px;
-    }
-
-    .no-scrollbar::-webkit-scrollbar {
-      display: none;
-    }
-    .no-scrollbar {
-      -ms-overflow-style: none;
-      scrollbar-width: none;
-    }
+    body { background-color: #070b14; color: #e2e8f0; font-family: Inter, system-ui, -apple-system, sans-serif; }
+    ::-webkit-scrollbar { width: 8px; height: 8px; }
+    ::-webkit-scrollbar-track { background: #0f172a; }
+    ::-webkit-scrollbar-thumb { background: #334155; border-radius: 4px; }
+    ::-webkit-scrollbar-thumb:hover { background: #475569; }
+    .glass { background: rgba(15, 23, 42, 0.78); backdrop-filter: blur(12px); border: 1px solid rgba(148, 163, 184, 0.14); }
+    .tab-active { background: linear-gradient(135deg, #2563eb, #7c3aed); color: #fff; box-shadow: 0 4px 16px rgba(59, 130, 246, 0.35); }
+    .drawer-enter { transform: translateX(0%); }
+    .drawer-exit { transform: translateX(100%); }
   </style>
 </head>
-<body class="bg-grid min-h-screen flex flex-col selection:bg-indigo-500/30 selection:text-indigo-200">
+<body class="min-h-screen antialiased selection:bg-blue-500/30 selection:text-blue-200">
 
-  <!-- Toast Container -->
-  <div id="toast-container" class="fixed bottom-5 right-5 z-50 flex flex-col gap-2 max-w-sm w-full px-4 sm:px-0 pointer-events-none"></div>
-
-  <!-- Hidden File Input for JSON Import -->
-  <input type="file" id="import-file-input" accept="application/json" class="hidden" />
-
-  <!-- Custom Confirmation Modal -->
-  <div id="confirm-modal" class="fixed inset-0 z-50 hidden items-center justify-center bg-black/75 backdrop-blur-sm p-4">
-    <div class="glass-card rounded-2xl max-w-md w-full p-6 border border-slate-700 shadow-2xl">
-      <div class="flex items-center gap-3 mb-3">
-        <div class="p-2.5 rounded-xl bg-indigo-500/15 text-indigo-400">
-          <i data-lucide="rotate-ccw" class="w-5 h-5"></i>
+  <!-- TOP HUD -->
+  <header class="sticky top-0 z-30 glass border-b border-slate-800/80">
+    <div class="max-w-7xl mx-auto px-4 py-3 flex flex-wrap items-center justify-between gap-4">
+      <div class="flex items-center gap-3">
+        <div class="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-500 to-violet-600 flex items-center justify-center font-black text-white shadow-lg shadow-blue-500/20">
+          AI
         </div>
-        <h3 id="modal-title" class="text-lg font-bold text-white">Confirm Action</h3>
+        <div>
+          <div class="flex items-center gap-2">
+            <h1 class="text-base sm:text-lg font-bold tracking-tight text-white">AI & MLOps 2027 Command Center</h1>
+            <span class="text-[11px] font-semibold px-2 py-0.5 rounded-full bg-violet-500/20 text-violet-300 border border-violet-500/30">3-YOE Edition</span>
+          </div>
+          <p class="text-xs text-slate-400">Jan–Sep Build & Certify • Oct 1, 2027 Launch</p>
+        </div>
       </div>
-      <p id="modal-message" class="text-sm text-slate-300 leading-relaxed mb-6">Are you sure?</p>
-      <div class="flex justify-end gap-3">
-        <button id="modal-cancel" class="px-4 py-2 rounded-xl text-sm font-medium bg-slate-800 hover:bg-slate-700 text-slate-300 transition cursor-pointer">Cancel</button>
-        <button id="modal-confirm" class="px-4 py-2 rounded-xl text-sm font-semibold bg-indigo-500 hover:bg-indigo-400 text-white transition cursor-pointer">Confirm</button>
+
+      <!-- HUD STATS -->
+      <div class="flex flex-wrap items-center gap-3 sm:gap-5">
+        <!-- Level & XP -->
+        <div class="min-w-[175px]">
+          <div class="flex items-center justify-between text-xs mb-1">
+            <span class="font-bold text-blue-400" id="hud-level">LVL 1 • Apprentice</span>
+            <span class="text-slate-400 font-mono" id="hud-xp">0 XP</span>
+          </div>
+          <div class="w-full h-2 bg-slate-800 rounded-full overflow-hidden">
+            <div id="hud-xp-bar" class="h-full bg-gradient-to-r from-blue-500 via-indigo-500 to-violet-500 transition-all duration-500" style="width: 0%"></div>
+          </div>
+        </div>
+
+        <!-- Readiness -->
+        <div class="px-3 py-1.5 rounded-lg bg-slate-900/90 border border-slate-800 text-center">
+          <div class="text-[10px] uppercase tracking-wider text-slate-400">3-YOE Ready</div>
+          <div class="text-sm font-bold text-emerald-400" id="hud-readiness">0%</div>
+        </div>
+
+        <!-- Streak -->
+        <div class="px-3 py-1.5 rounded-lg bg-slate-900/90 border border-slate-800 text-center">
+          <div class="text-[10px] uppercase tracking-wider text-slate-400">Streak</div>
+          <div class="text-sm font-bold text-amber-400" id="hud-streak">0d</div>
+        </div>
+
+        <!-- Countdown -->
+        <div class="px-3 py-1.5 rounded-lg bg-slate-900/90 border border-slate-800 text-center">
+          <div class="text-[10px] uppercase tracking-wider text-slate-400">Oct 1 Launch</div>
+          <div class="text-sm font-bold text-cyan-400" id="hud-countdown">--d</div>
+        </div>
+
+        <!-- Backup Actions -->
+        <div class="flex items-center gap-1.5">
+          <button onclick="exportData()" title="Export JSON Backup" class="px-2.5 py-1.5 text-xs font-medium rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 transition">Export</button>
+          <label title="Import JSON Backup" class="px-2.5 py-1.5 text-xs font-medium rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 cursor-pointer transition">
+            Import
+            <input type="file" accept=".json" onchange="importData(event)" class="hidden" />
+          </label>
+        </div>
       </div>
     </div>
-  </div>
 
-  <!-- Top HUD Header -->
-  <header class="sticky top-0 z-40 border-b border-slate-800/80 bg-[#090D16]/90 backdrop-blur-xl">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 py-3.5">
-      <!-- Top Row: Brand, Level, Backup Buttons -->
-      <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
-        <div class="flex items-center justify-between gap-3">
-          <div class="flex items-center gap-3">
-            <div class="w-11 h-11 rounded-xl bg-gradient-to-br from-indigo-500 via-cyan-500 to-emerald-500 p-[1.5px] shrink-0 glow-indigo">
-              <div class="w-full h-full rounded-[10px] bg-[#090D16] flex flex-col items-center justify-center">
-                <span class="text-[9px] font-mono uppercase tracking-wider text-indigo-400 leading-none">LVL</span>
-                <span id="hud-level" class="text-base font-extrabold font-mono text-white leading-tight">1</span>
-              </div>
-            </div>
-            <div>
-              <div class="flex items-center gap-2 flex-wrap">
-                <h1 class="text-sm sm:text-base font-bold text-white tracking-tight">AI & MLOps 2027 Command Center</h1>
-                <span class="px-2 py-0.5 rounded-full text-[10px] font-mono font-semibold bg-indigo-500/15 text-indigo-300 border border-indigo-500/35">3-YOE EDITION</span>
-              </div>
-              <div class="flex items-center gap-2 mt-0.5">
-                <span id="hud-rank" class="text-xs font-semibold text-cyan-400">Analyst</span>
-                <span class="text-slate-600">•</span>
-                <span id="hud-xp-text" class="text-xs font-mono text-slate-400">0 / 600 XP</span>
-              </div>
-            </div>
-          </div>
-
-          <!-- Mobile Streak Pill -->
-          <button id="btn-checkin-mobile" class="flex lg:hidden items-center gap-1.5 px-2.5 py-1.5 rounded-xl bg-amber-500/10 border border-amber-500/30 text-amber-300 font-mono text-xs font-semibold cursor-pointer">
-            <i data-lucide="flame" class="w-3.5 h-3.5 text-amber-400"></i>
-            <span id="hud-streak-mobile">0d</span>
-          </button>
-        </div>
-
-        <!-- XP Bar + Telemetry + Export/Import -->
-        <div class="flex flex-col sm:flex-row items-stretch sm:items-center gap-3 flex-1 lg:max-w-3xl lg:justify-end">
-          <!-- XP Progress Bar -->
-          <div class="flex-1 min-w-[140px] max-w-[210px]">
-            <div class="flex items-center justify-between text-[10px] font-mono mb-1">
-              <span class="text-slate-400">LEVEL PROGRESS</span>
-              <span id="hud-xp-pct" class="text-emerald-400 font-semibold">0%</span>
-            </div>
-            <div class="h-2.5 w-full rounded-full bg-slate-800/90 overflow-hidden border border-slate-700/60">
-              <div id="hud-xp-bar" class="h-full rounded-full bg-gradient-to-r from-indigo-400 via-cyan-400 to-emerald-400 transition-all duration-500" style="width: 0%"></div>
-            </div>
-          </div>
-
-          <!-- Telemetry Metrics & Portability -->
-          <div class="flex items-center gap-2 flex-wrap sm:flex-nowrap">
-            <!-- Desktop Streak -->
-            <button id="btn-checkin" title="Log today's study activity" class="hidden lg:flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl bg-amber-500/10 hover:bg-amber-500/20 border border-amber-500/30 text-amber-300 transition cursor-pointer">
-              <i data-lucide="flame" class="w-4 h-4 text-amber-400"></i>
-              <div class="text-left">
-                <div class="text-[9px] font-mono uppercase text-amber-400/80 leading-none">Streak</div>
-                <div id="hud-streak" class="text-xs font-mono font-bold leading-tight">0d</div>
-              </div>
-            </button>
-
-            <!-- Readiness % -->
-            <div class="flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl bg-emerald-500/10 border border-emerald-500/30 text-emerald-300">
-              <i data-lucide="shield-check" class="w-4 h-4 text-emerald-400 shrink-0"></i>
-              <div>
-                <div class="text-[9px] font-mono uppercase text-emerald-400/80 leading-none">Readiness</div>
-                <div id="hud-readiness" class="text-xs font-mono font-bold leading-tight">0%</div>
-              </div>
-            </div>
-
-            <!-- Live Countdown to October 1, 2027 -->
-            <div class="flex items-center gap-1.5 px-2.5 py-1.5 rounded-xl bg-indigo-500/15 border border-indigo-500/35 text-indigo-200">
-              <i data-lucide="rocket" class="w-4 h-4 text-indigo-400 shrink-0"></i>
-              <div>
-                <div class="text-[9px] font-mono uppercase text-indigo-300/80 leading-none">Apply Oct 1 '27</div>
-                <div id="hud-countdown" class="text-xs font-mono font-bold leading-tight">--d --h --m</div>
-              </div>
-            </div>
-
-            <!-- Export / Import Backup (JSON) -->
-            <div class="flex items-center gap-1.5 ml-auto sm:ml-0">
-              <button id="btn-export-json" title="Export Backup (JSON)" class="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-xl bg-slate-800/90 hover:bg-slate-700 text-slate-200 border border-slate-700 text-[11px] font-semibold transition cursor-pointer">
-                <i data-lucide="download" class="w-3.5 h-3.5 text-cyan-400"></i>
-                <span class="hidden xl:inline">Export</span>
-              </button>
-              <button id="btn-import-json" title="Import Backup (JSON)" class="inline-flex items-center gap-1 px-2.5 py-1.5 rounded-xl bg-slate-800/90 hover:bg-slate-700 text-slate-200 border border-slate-700 text-[11px] font-semibold transition cursor-pointer">
-                <i data-lucide="upload" class="w-3.5 h-3.5 text-indigo-400"></i>
-                <span class="hidden xl:inline">Import</span>
-              </button>
-            </div>
-          </div>
-        </div>
-      </div>
-
-      <!-- Navigation Tabs -->
-      <nav class="mt-3.5 -mb-3.5 flex items-center gap-1 overflow-x-auto no-scrollbar" aria-label="Main Navigation">
-        <button data-tab="overview" class="nav-tab active flex items-center gap-2 px-4 py-2.5 text-xs sm:text-sm font-semibold whitespace-nowrap border-b-2 border-indigo-400 text-indigo-300 transition cursor-pointer">
-          <i data-lucide="layout-dashboard" class="w-4 h-4"></i>
-          Overview & Rhythm
-        </button>
-        <button data-tab="quests" class="nav-tab flex items-center gap-2 px-4 py-2.5 text-xs sm:text-sm font-medium whitespace-nowrap border-b-2 border-transparent text-slate-400 hover:text-slate-200 transition cursor-pointer">
-          <i data-lucide="scroll-text" class="w-4 h-4"></i>
-          Quest Log (Jan–Oct+)
-        </button>
-        <button data-tab="projects" class="nav-tab flex items-center gap-2 px-4 py-2.5 text-xs sm:text-sm font-medium whitespace-nowrap border-b-2 border-transparent text-slate-400 hover:text-slate-200 transition cursor-pointer">
-          <i data-lucide="cpu" class="w-4 h-4"></i>
-          Project Forge (7)
-        </button>
-        <button data-tab="certs" class="nav-tab flex items-center gap-2 px-4 py-2.5 text-xs sm:text-sm font-medium whitespace-nowrap border-b-2 border-transparent text-slate-400 hover:text-slate-200 transition cursor-pointer">
-          <i data-lucide="award" class="w-4 h-4"></i>
-          Cert Trophy Case (5)
-        </button>
-        <button data-tab="fundamentals" class="nav-tab flex items-center gap-2 px-4 py-2.5 text-xs sm:text-sm font-medium whitespace-nowrap border-b-2 border-transparent text-slate-400 hover:text-slate-200 transition cursor-pointer">
-          <i data-lucide="shield-alert" class="w-4 h-4"></i>
-          Fundamentals Shield (19)
-        </button>
-      </nav>
+    <!-- NAVIGATION TABS -->
+    <div class="max-w-7xl mx-auto px-4 pb-3 flex items-center gap-2 overflow-x-auto">
+      <button onclick="switchTab('overview')" id="tab-overview" class="tab-btn px-3.5 py-1.5 rounded-lg text-xs sm:text-sm font-semibold transition whitespace-nowrap">Overview & Rhythm</button>
+      <button onclick="switchTab('quests')" id="tab-quests" class="tab-btn px-3.5 py-1.5 rounded-lg text-xs sm:text-sm font-semibold transition whitespace-nowrap">Quest Log (Jan–Dec)</button>
+      <button onclick="switchTab('projects')" id="tab-projects" class="tab-btn px-3.5 py-1.5 rounded-lg text-xs sm:text-sm font-semibold transition whitespace-nowrap">Project Forge (7)</button>
+      <button onclick="switchTab('certs')" id="tab-certs" class="tab-btn px-3.5 py-1.5 rounded-lg text-xs sm:text-sm font-semibold transition whitespace-nowrap">Cert Trophy Case (5)</button>
+      <button onclick="switchTab('fundamentals')" id="tab-fundamentals" class="tab-btn px-3.5 py-1.5 rounded-lg text-xs sm:text-sm font-semibold transition whitespace-nowrap">Fundamentals Shield (19)</button>
+      <button onclick="switchTab('jobs')" id="tab-jobs" class="tab-btn px-3.5 py-1.5 rounded-lg text-xs sm:text-sm font-semibold transition whitespace-nowrap">Phase 2 Job Pipeline</button>
     </div>
   </header>
 
-  <!-- Main Content -->
-  <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 py-6 sm:py-8">
+  <!-- MAIN CONTENT -->
+  <main class="max-w-7xl mx-auto px-4 py-6 space-y-6">
 
-    <!-- ==================== TAB 1: OVERVIEW & WEEKLY RHYTHM ==================== -->
-    <section id="tab-overview" class="tab-panel space-y-6">
-
-      <!-- Prominent 3-YOE Golden Rules Card -->
-      <div class="glass-card rounded-2xl p-5 sm:p-6 border-indigo-500/40 bg-gradient-to-br from-indigo-950/40 via-slate-900/80 to-slate-900/80">
-        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-4">
-          <div class="flex items-center gap-2.5">
-            <div class="p-2 rounded-xl bg-indigo-500/20 text-indigo-300 border border-indigo-500/30">
-              <i data-lucide="crown" class="w-5 h-5"></i>
-            </div>
-            <div>
-              <h2 class="text-base sm:text-lg font-bold text-white">The 3-YOE Golden Rules (Non-Negotiable)</h2>
-              <p class="text-xs text-slate-400">Depth beats tutorial checkboxes. Follow these three rules on every build through September 2027.</p>
-            </div>
-          </div>
-          <span class="self-start sm:self-center px-2.5 py-1 rounded-full text-[10px] font-mono font-bold bg-emerald-500/15 text-emerald-300 border border-emerald-500/30">ANTI-TUTORIAL PROTOCOL</span>
+    <!-- ==================== TAB 1: OVERVIEW ==================== -->
+    <section id="view-overview" class="space-y-6">
+      <!-- 3-YOE GOLDEN RULES -->
+      <div class="glass rounded-2xl p-5 border-l-4 border-l-violet-500">
+        <div class="flex items-center justify-between mb-3">
+          <h2 class="text-base font-bold text-white flex items-center gap-2">
+            <span>⚡</span> The 3-YOE Golden Rules (Non-Negotiable)
+          </h2>
+          <span class="text-xs text-slate-400">Depth &gt; Tutorial Checkboxes</span>
         </div>
-
-        <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
-          <div class="p-4 rounded-xl bg-slate-950/65 border border-slate-800/90">
-            <div class="flex items-center gap-2 mb-1.5">
-              <span class="w-6 h-6 rounded-lg bg-cyan-500/20 text-cyan-300 font-mono text-xs font-bold flex items-center justify-center">1</span>
-              <h3 class="text-sm font-bold text-white">Real Business Problems Only</h3>
-            </div>
-            <p class="text-xs text-slate-400 leading-relaxed">Zero toy datasets or generic PDF chatbots. Anchor every build to enterprise workflows: <span class="text-cyan-300">Commodity/Supply-Chain Pricing, Contract/Trade Analytics, or Automated Financial Reporting</span>.</p>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-xs sm:text-sm">
+          <div class="p-3.5 rounded-xl bg-slate-900/80 border border-slate-800">
+            <div class="font-bold text-blue-400 mb-1">1. Anchor to Real Business Problems</div>
+            <p class="text-slate-300 leading-relaxed">Skip toy datasets and generic PDF chatbots. Build forecasting engines, Spark pipelines, and SQL/API agents around realistic enterprise workflows (supply-chain pricing, contract/trade analytics, automated financial reporting).</p>
           </div>
-
-          <div class="p-4 rounded-xl bg-slate-950/65 border border-slate-800/90">
-            <div class="flex items-center gap-2 mb-1.5">
-              <span class="w-6 h-6 rounded-lg bg-amber-500/20 text-amber-300 font-mono text-xs font-bold flex items-center justify-center">2</span>
-              <h3 class="text-sm font-bold text-white">Production Proof &gt; Cert Count</h3>
-            </div>
-            <p class="text-xs text-slate-400 leading-relaxed">Never sacrifice project depth just to chase 5 badges. <span class="text-amber-300">3 Core Certs (AI-300, DP-750, AI-103)</span> paired with 4–5 deeply engineered repos beat 5 certs with shallow code.</p>
+          <div class="p-3.5 rounded-xl bg-slate-900/80 border border-slate-800">
+            <div class="font-bold text-emerald-400 mb-1">2. Production Proof Over Cert Count</div>
+            <p class="text-slate-300 leading-relaxed">If work gets hectic, never sacrifice project depth just to chase 5 badges. <strong>3 Core Certs (AI-300 + AI-103 + DP-750/Databricks GenAI)</strong> + 4–5 deeply engineered, benchmarked repos beat 5 certs with shallow code.</p>
           </div>
-
-          <div class="p-4 rounded-xl bg-slate-950/65 border border-slate-800/90">
-            <div class="flex items-center gap-2 mb-1.5">
-              <span class="w-6 h-6 rounded-lg bg-emerald-500/20 text-emerald-300 font-mono text-xs font-bold flex items-center justify-center">3</span>
-              <h3 class="text-sm font-bold text-white">Measure Everything You Build</h3>
-            </div>
-            <p class="text-xs text-slate-400 leading-relaxed">Always log <span class="text-emerald-300">latency, cost/FinOps, and accuracy/eval scores</span> in every README (e.g., <em>"-45% latency via semantic caching"</em> or <em>"RAGAS faithfulness 0.92 in CI/CD"</em>).</p>
+          <div class="p-3.5 rounded-xl bg-slate-900/80 border border-slate-800">
+            <div class="font-bold text-amber-400 mb-1">3. Measure Everything You Build</div>
+            <p class="text-slate-300 leading-relaxed">Log concrete numbers in every README: latency reductions, token cost savings via routing/caching, Spark runtime improvements, and RAGAS/DeepEval scores caught in CI/CD before production.</p>
           </div>
         </div>
       </div>
 
-      <!-- KPI Summary Cards -->
-      <div class="grid grid-cols-2 lg:grid-cols-5 gap-3 sm:gap-4">
-        <div class="glass-card rounded-2xl p-4 sm:p-5">
-          <div class="flex items-center justify-between mb-2">
-            <span class="text-xs font-medium text-slate-400">Total XP Earned</span>
-            <span class="p-1.5 rounded-lg bg-indigo-500/15 text-indigo-400"><i data-lucide="zap" class="w-4 h-4"></i></span>
-          </div>
-          <div id="stat-xp" class="text-2xl sm:text-3xl font-extrabold font-mono text-white">0</div>
-          <div id="stat-xp-sub" class="text-[11px] font-mono text-indigo-400 mt-1">Level 1 / 20</div>
+      <!-- PROGRESS SUMMARY CARDS -->
+      <div class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+        <div class="glass rounded-2xl p-4">
+          <div class="text-xs text-slate-400">Quests Completed</div>
+          <div class="text-2xl font-black text-white mt-1" id="stat-quests">0 / 14</div>
+          <div class="text-xs text-blue-400 mt-1" id="stat-subtopics">0 subtopics checked</div>
         </div>
-
-        <div class="glass-card rounded-2xl p-4 sm:p-5">
-          <div class="flex items-center justify-between mb-2">
-            <span class="text-xs font-medium text-slate-400">Certs Unlocked</span>
-            <span class="p-1.5 rounded-lg bg-amber-500/15 text-amber-400"><i data-lucide="award" class="w-4 h-4"></i></span>
-          </div>
-          <div id="stat-certs" class="text-2xl sm:text-3xl font-extrabold font-mono text-white">0<span class="text-lg text-slate-500">/5</span></div>
-          <div id="stat-core-certs" class="text-[11px] font-mono text-amber-400 mt-1">0/3 Core Priority</div>
+        <div class="glass rounded-2xl p-4">
+          <div class="text-xs text-slate-400">Projects Deployed</div>
+          <div class="text-2xl font-black text-white mt-1" id="stat-projects">0 / 7</div>
+          <div class="text-xs text-emerald-400 mt-1">All 4 gates = Deployed</div>
         </div>
-
-        <div class="glass-card rounded-2xl p-4 sm:p-5">
-          <div class="flex items-center justify-between mb-2">
-            <span class="text-xs font-medium text-slate-400">Projects Deployed</span>
-            <span class="p-1.5 rounded-lg bg-emerald-500/15 text-emerald-400"><i data-lucide="rocket" class="w-4 h-4"></i></span>
-          </div>
-          <div id="stat-projects" class="text-2xl sm:text-3xl font-extrabold font-mono text-white">0<span class="text-lg text-slate-500">/7</span></div>
-          <div class="text-[11px] text-slate-400 mt-1">5 quality gates each</div>
+        <div class="glass rounded-2xl p-4">
+          <div class="text-xs text-slate-400">Certifications Passed</div>
+          <div class="text-2xl font-black text-white mt-1" id="stat-certs">0 / 5</div>
+          <div class="text-xs text-violet-400 mt-1">3 Core • 2 Bonus</div>
         </div>
-
-        <div class="glass-card rounded-2xl p-4 sm:p-5">
-          <div class="flex items-center justify-between mb-2">
-            <span class="text-xs font-medium text-slate-400">Fundamentals Shield</span>
-            <span class="p-1.5 rounded-lg bg-violet-500/15 text-violet-400"><i data-lucide="shield" class="w-4 h-4"></i></span>
-          </div>
-          <div id="stat-fundamentals" class="text-2xl sm:text-3xl font-extrabold font-mono text-white">0<span class="text-lg text-slate-500">/19</span></div>
-          <div class="text-[11px] text-slate-400 mt-1">Zero blind spots</div>
-        </div>
-
-        <div class="glass-card rounded-2xl p-4 sm:p-5 col-span-2 lg:col-span-1">
-          <div class="flex items-center justify-between mb-2">
-            <span class="text-xs font-medium text-slate-400">Weekly Hours</span>
-            <span class="p-1.5 rounded-lg bg-cyan-500/15 text-cyan-400"><i data-lucide="clock" class="w-4 h-4"></i></span>
-          </div>
-          <div id="stat-hours" class="text-2xl sm:text-3xl font-extrabold font-mono text-white">0.0<span class="text-base text-slate-500">/9.5h</span></div>
-          <div id="stat-hours-sub" class="text-[11px] font-mono text-cyan-400 mt-1">0% of weekly goal</div>
+        <div class="glass rounded-2xl p-4">
+          <div class="text-xs text-slate-400">Fundamentals Shield</div>
+          <div class="text-2xl font-black text-white mt-1" id="stat-fundamentals">0 / 19</div>
+          <div class="text-xs text-amber-400 mt-1">Zero interview blind spots</div>
         </div>
       </div>
 
-      <!-- Weekly Rhythm + Focus Timer -->
+      <!-- WEEKLY RHYTHM + DEEP FOCUS TIMER -->
       <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
-        <!-- Office-Friendly Weekly Hour Logger (9.5 hrs/week) -->
-        <div class="lg:col-span-2 glass-card rounded-2xl p-5 sm:p-6">
-          <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3 mb-5">
+        <!-- Office-Friendly 9.5 hrs/week Logger -->
+        <div class="lg:col-span-2 glass rounded-2xl p-5">
+          <div class="flex flex-wrap items-center justify-between gap-2 mb-4">
             <div>
-              <h2 class="text-lg font-bold text-white flex items-center gap-2">
-                <i data-lucide="calendar-clock" class="w-5 h-5 text-cyan-400"></i>
-                Office-Friendly Weekly Rhythm (9.5 hrs/wk)
-              </h2>
-              <p class="text-xs text-slate-400 mt-0.5">Sustainable 9-month pace alongside a 5-day office job • Weeks completed: <span id="weeks-completed-count" class="font-mono text-cyan-400 font-semibold">0</span></p>
+              <h3 class="text-base font-bold text-white">Weekly Office-Friendly Rhythm (Target: 9.5 hrs/wk)</h3>
+              <p class="text-xs text-slate-400">Sustainable 9-month pace alongside a 5-day office job (Mon–Thu 1h, Fri Off, Sat 3h, Sun 2.5h)</p>
             </div>
-            <button id="btn-reset-week" class="inline-flex items-center justify-center gap-1.5 px-3.5 py-2 rounded-xl text-xs font-semibold bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 transition cursor-pointer">
-              <i data-lucide="refresh-cw" class="w-3.5 h-3.5 text-cyan-400"></i>
-              Start New Week
-            </button>
-          </div>
-
-          <!-- Weekly Progress Bar -->
-          <div class="mb-5 p-3.5 rounded-xl bg-slate-950/70 border border-slate-800">
-            <div class="flex items-center justify-between text-xs font-mono mb-1.5">
-              <span class="text-slate-300">CURRENT WEEK LOGGED</span>
-              <span id="weekly-bar-label" class="text-cyan-400 font-bold">0.0 / 9.5 hrs (0%)</span>
-            </div>
-            <div class="h-2.5 w-full rounded-full bg-slate-800 overflow-hidden">
-              <div id="weekly-bar-fill" class="h-full rounded-full bg-gradient-to-r from-indigo-400 via-cyan-400 to-emerald-400 transition-all duration-300" style="width: 0%"></div>
+            <div class="flex items-center gap-2">
+              <span class="text-sm font-bold text-cyan-400" id="weekly-total">0.0 / 9.5 hrs</span>
+              <button onclick="resetWeekHours()" class="px-2.5 py-1 text-xs rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 border border-slate-700">New Week</button>
             </div>
           </div>
 
-          <div id="weekly-schedule-list" class="space-y-2.5">
-            <!-- Populated by JS -->
+          <div class="w-full h-2.5 bg-slate-800 rounded-full overflow-hidden mb-4">
+            <div id="weekly-bar" class="h-full bg-gradient-to-r from-cyan-500 to-emerald-500 transition-all duration-300" style="width: 0%"></div>
           </div>
+
+          <div class="grid grid-cols-2 sm:grid-cols-4 md:grid-cols-7 gap-2.5" id="weekly-days-grid"></div>
         </div>
 
         <!-- Deep Focus Timer -->
-        <div class="glass-card rounded-2xl p-5 sm:p-6 flex flex-col justify-between">
+        <div class="glass rounded-2xl p-5 flex flex-col justify-between">
           <div>
-            <div class="flex items-center justify-between mb-1">
-              <h2 class="text-lg font-bold text-white flex items-center gap-2">
-                <i data-lucide="timer" class="w-5 h-5 text-indigo-400"></i>
-                Deep Focus Timer
-              </h2>
-              <span class="px-2 py-0.5 rounded-full text-[10px] font-mono font-semibold bg-emerald-500/15 text-emerald-400 border border-emerald-500/30">+25 XP / Sprint</span>
+            <div class="flex items-center justify-between mb-2">
+              <h3 class="text-base font-bold text-white">Deep Focus Timer</h3>
+              <span class="text-xs px-2 py-0.5 rounded-full bg-emerald-500/20 text-emerald-300 font-semibold">+25 XP</span>
             </div>
-            <p class="text-xs text-slate-400 mb-5">Complete a sprint to earn +25 XP and auto-log hours to today's schedule.</p>
+            <p class="text-xs text-slate-400 mb-4">Completing a session awards XP & auto-logs hours to today.</p>
 
-            <!-- Presets -->
-            <div class="grid grid-cols-3 gap-2 mb-6">
-              <button data-preset="25" class="timer-preset active py-2 rounded-xl text-xs font-mono font-semibold bg-indigo-500/20 text-indigo-300 border border-indigo-500/50 transition cursor-pointer">25 min</button>
-              <button data-preset="45" class="timer-preset py-2 rounded-xl text-xs font-mono font-semibold bg-slate-800/80 text-slate-400 border border-slate-700/60 hover:text-white transition cursor-pointer">45 min</button>
-              <button data-preset="90" class="timer-preset py-2 rounded-xl text-xs font-mono font-semibold bg-slate-800/80 text-slate-400 border border-slate-700/60 hover:text-white transition cursor-pointer">90 min</button>
+            <div class="flex items-center justify-center gap-2 mb-4">
+              <button onclick="setTimerPreset(25)" class="px-3 py-1 text-xs font-semibold rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700">25m</button>
+              <button onclick="setTimerPreset(45)" class="px-3 py-1 text-xs font-semibold rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700">45m</button>
+              <button onclick="setTimerPreset(90)" class="px-3 py-1 text-xs font-semibold rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700">90m</button>
             </div>
 
-            <!-- SVG Ring -->
-            <div class="relative flex items-center justify-center my-4">
-              <svg class="w-48 h-48 -rotate-90" viewBox="0 0 180 180">
-                <circle cx="90" cy="90" r="80" fill="none" stroke="rgba(30, 41, 59, 0.9)" stroke-width="10" />
-                <circle id="timer-ring" cx="90" cy="90" r="80" fill="none" stroke="url(#timerGrad)" stroke-width="10" stroke-linecap="round" stroke-dasharray="502.65" stroke-dashoffset="0" class="transition-all duration-300" />
-                <defs>
-                  <linearGradient id="timerGrad" x1="0%" y1="0%" x2="100%" y2="0%">
-                    <stop offset="0%" stop-color="#818CF8" />
-                    <stop offset="50%" stop-color="#22D3EE" />
-                    <stop offset="100%" stop-color="#10B981" />
-                  </linearGradient>
-                </defs>
-              </svg>
-              <div class="absolute inset-0 flex flex-col items-center justify-center">
-                <span id="timer-display" class="text-4xl font-extrabold font-mono text-white tracking-tight">25:00</span>
-                <span id="timer-status" class="text-[11px] font-mono uppercase tracking-widest text-slate-400 mt-1">Ready</span>
-              </div>
+            <div class="text-center py-4 rounded-xl bg-slate-900/90 border border-slate-800 mb-4">
+              <div id="timer-display" class="text-4xl font-mono font-black tracking-wider text-white">45:00</div>
+              <div id="timer-status" class="text-xs text-slate-400 mt-1">Ready for deep work</div>
             </div>
           </div>
 
-          <div class="space-y-3 mt-4">
-            <div class="grid grid-cols-2 gap-2.5">
-              <button id="btn-timer-toggle" class="py-2.5 px-4 rounded-xl text-sm font-bold bg-gradient-to-r from-indigo-500 to-cyan-500 hover:from-indigo-400 hover:to-cyan-400 text-slate-950 transition flex items-center justify-center gap-2 cursor-pointer glow-indigo">
-                <i data-lucide="play" class="w-4 h-4"></i>
-                <span>Start</span>
-              </button>
-              <button id="btn-timer-reset" class="py-2.5 px-4 rounded-xl text-sm font-semibold bg-slate-800 hover:bg-slate-700 text-slate-200 border border-slate-700 transition flex items-center justify-center gap-2 cursor-pointer">
-                <i data-lucide="rotate-ccw" class="w-4 h-4"></i>
-                <span>Reset</span>
-              </button>
-            </div>
-            <div class="flex items-center justify-between px-3.5 py-2.5 rounded-xl bg-slate-950/70 border border-slate-800 text-xs">
-              <span class="text-slate-400">Sessions Completed</span>
-              <span id="timer-sessions-count" class="font-mono font-bold text-emerald-400">0 (+0 XP)</span>
-            </div>
+          <div class="flex gap-2">
+            <button onclick="toggleTimer()" id="timer-start-btn" class="flex-1 py-2 rounded-xl bg-blue-600 hover:bg-blue-500 text-white font-semibold text-sm transition">Start</button>
+            <button onclick="resetTimer()" class="px-4 py-2 rounded-xl bg-slate-800 hover:bg-slate-700 text-slate-300 font-semibold text-sm border border-slate-700 transition">Reset</button>
           </div>
-        </div>
-      </div>
-
-      <!-- Readiness Breakdown -->
-      <div class="glass-card rounded-2xl p-5 sm:p-6">
-        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-4">
-          <h2 class="text-base font-bold text-white flex items-center gap-2">
-            <i data-lucide="bar-chart-3" class="w-5 h-5 text-emerald-400"></i>
-            3-YOE Mid-Level Readiness Breakdown
-          </h2>
-          <span class="text-xs font-mono text-slate-400">Application Launch Target: October 1, 2027</span>
-        </div>
-        <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4" id="readiness-breakdown">
-          <!-- Populated by JS -->
         </div>
       </div>
     </section>
 
-    <!-- ==================== TAB 2: QUEST LOG (JAN - OCT+ 2027) ==================== -->
-    <section id="tab-quests" class="tab-panel hidden space-y-6">
-      <!-- Header & Filters -->
-      <div class="flex flex-col md:flex-row md:items-center justify-between gap-4">
+    <!-- ==================== TAB 2: QUEST LOG ==================== -->
+    <section id="view-quests" class="hidden space-y-5">
+      <div class="flex flex-wrap items-center justify-between gap-3">
         <div>
-          <h2 class="text-xl font-bold text-white">Quest Log (Jan – Oct+ 2027)</h2>
-          <p class="text-xs sm:text-sm text-slate-400 mt-0.5">Complete weekly missions (+100 XP each). Phase 1 builds deep production proof; Phase 2 launches applications in Oct 2027.</p>
+          <h2 class="text-lg font-bold text-white">Quest Log (Jan–Dec 2027)</h2>
+          <p class="text-xs text-slate-400">Click any quest card to open the Deep-Dive Study Guide, checkable subtopics (+15 XP), interview traps, and practical links.</p>
         </div>
-        <div class="flex items-center gap-1.5 flex-wrap" id="quest-filters">
-          <button data-filter="all" class="quest-filter-btn active px-3 py-1.5 rounded-xl text-xs font-semibold bg-indigo-500/20 text-indigo-300 border border-indigo-500/50 cursor-pointer">All</button>
-          <button data-filter="phase1" class="quest-filter-btn px-3 py-1.5 rounded-xl text-xs font-medium bg-slate-800/80 text-slate-400 border border-slate-700/60 hover:text-white cursor-pointer">Phase 1 (Jan–Sep)</button>
-          <button data-filter="phase2" class="quest-filter-btn px-3 py-1.5 rounded-xl text-xs font-medium bg-slate-800/80 text-slate-400 border border-slate-700/60 hover:text-white cursor-pointer">Phase 2 (Oct+)</button>
-          <select id="quest-module-select" class="px-3 py-1.5 rounded-xl text-xs font-medium bg-slate-800/90 text-slate-200 border border-slate-700 focus:outline-none focus:border-indigo-400 cursor-pointer">
-            <option value="all">Filter by Module...</option>
-            <option value="jan_feb">Jan–Feb: Core MLOps & DevOps</option>
-            <option value="mar_apr">Mar–Apr: Big Data for ML (Spark)</option>
-            <option value="may_jun">May–Jun: Production RAG & Fine-Tuning</option>
-            <option value="jul_aug">Jul–Aug: Agentic AI & LLMOps</option>
-            <option value="sep">Sep: Capstone & System Design</option>
-            <option value="oct_plus">Oct+: Active Applications & Offers</option>
-          </select>
+        <div class="flex items-center gap-2">
+          <button onclick="setQuestFilter('all')" id="qf-all" class="qf-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-blue-600 text-white">All (14)</button>
+          <button onclick="setQuestFilter('phase1')" id="qf-phase1" class="qf-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-800 text-slate-300">Phase 1: Build (Jan–Sep)</button>
+          <button onclick="setQuestFilter('phase2')" id="qf-phase2" class="qf-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-800 text-slate-300">Phase 2: Apply (Oct–Dec)</button>
         </div>
       </div>
 
-      <!-- Phase 2 Job Application & Interview Tracker -->
-      <div class="glass-card rounded-2xl p-5 border-indigo-500/35">
-        <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 mb-4">
-          <div class="flex items-center gap-2.5">
-            <div class="p-2 rounded-xl bg-indigo-500/15 text-indigo-400">
-              <i data-lucide="briefcase" class="w-5 h-5"></i>
-            </div>
-            <div>
-              <h3 class="text-sm sm:text-base font-bold text-white">Phase 2 Job Application & Interview Tracker</h3>
-              <p class="text-xs text-slate-400">Track target companies, roles, and interview stages starting October 2027 (Q4/Q1 offer strategy).</p>
-            </div>
-          </div>
-          <div id="job-pipeline-summary" class="flex items-center gap-2 flex-wrap text-[11px] font-mono">
-            <!-- Populated by JS -->
-          </div>
-        </div>
-
-        <!-- Add New Application Form -->
-        <form id="job-add-form" class="grid grid-cols-1 sm:grid-cols-4 gap-2.5 mb-4">
-          <input id="job-company-input" type="text" required placeholder="Company (e.g. Microsoft, Uber, GCC...)" class="px-3 py-2 rounded-xl bg-slate-950/80 border border-slate-800 focus:border-indigo-400 focus:outline-none text-xs text-slate-200" />
-          <input id="job-role-input" type="text" required placeholder="Role (e.g. AI / MLOps Engineer - 3 YOE)" class="px-3 py-2 rounded-xl bg-slate-950/80 border border-slate-800 focus:border-indigo-400 focus:outline-none text-xs text-slate-200" />
-          <select id="job-status-input" class="px-3 py-2 rounded-xl bg-slate-950/80 border border-slate-800 focus:border-indigo-400 focus:outline-none text-xs text-slate-200 cursor-pointer">
-            <option value="Applied">Status: Applied</option>
-            <option value="Screening">Status: Screening</option>
-            <option value="System Design">Status: System Design</option>
-            <option value="Offer">Status: Offer</option>
-          </select>
-          <button type="submit" class="px-4 py-2 rounded-xl text-xs font-bold bg-indigo-500 hover:bg-indigo-400 text-white transition flex items-center justify-center gap-1.5 cursor-pointer">
-            <i data-lucide="plus" class="w-4 h-4"></i>
-            Add Application
-          </button>
-        </form>
-
-        <!-- Applications Table / List -->
-        <div id="job-applications-list" class="space-y-2 max-h-72 overflow-y-auto pr-1">
-          <!-- Populated by JS -->
-        </div>
-      </div>
-
-      <!-- Module Quest Accordions -->
-      <div id="quest-modules-container" class="space-y-4">
-        <!-- Populated by JS -->
-      </div>
+      <div id="quests-container" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
     </section>
 
-    <!-- ==================== TAB 3: PROJECT FORGE (7 ENTERPRISE PROJECTS) ==================== -->
-    <section id="tab-projects" class="tab-panel hidden space-y-6">
-      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
-        <div>
-          <h2 class="text-xl font-bold text-white">Project Forge (7 Enterprise Builds)</h2>
-          <p class="text-xs sm:text-sm text-slate-400 mt-0.5">Clear all <span class="text-emerald-400 font-semibold">5 Quality Gates</span> to mark a project DEPLOYED (<span class="font-mono text-cyan-400">+500 XP</span>) and log real latency, cost, and accuracy benchmarks.</p>
-        </div>
-        <div class="flex items-center gap-2 px-3.5 py-2 rounded-xl bg-slate-900/90 border border-slate-800 text-xs font-mono">
-          <span class="text-slate-400">Deployed:</span>
-          <span id="projects-header-count" class="text-emerald-400 font-bold">0 / 7</span>
-        </div>
+    <!-- ==================== TAB 3: PROJECT FORGE ==================== -->
+    <section id="view-projects" class="hidden space-y-5">
+      <div>
+        <h2 class="text-lg font-bold text-white">Project Forge (7 Enterprise-Anchored Builds)</h2>
+        <p class="text-xs text-slate-400">Clear all 4 non-negotiable 3-YOE quality gates on a project to mark it Deployed (+500 XP) and log concrete benchmark metrics.</p>
       </div>
-
-      <div id="projects-grid" class="grid grid-cols-1 lg:grid-cols-2 gap-5">
-        <!-- Populated by JS -->
-      </div>
+      <div id="projects-container" class="grid grid-cols-1 lg:grid-cols-2 gap-5"></div>
     </section>
 
-    <!-- ==================== TAB 4: CERT TROPHY CASE (5 CERTS) ==================== -->
-    <section id="tab-certs" class="tab-panel hidden space-y-6">
-      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+    <!-- ==================== TAB 4: CERT TROPHY CASE ==================== -->
+    <section id="view-certs" class="hidden space-y-5">
+      <div class="flex flex-wrap items-center justify-between gap-3">
         <div>
-          <h2 class="text-xl font-bold text-white">Cert Trophy Case (Core vs. Bonus Priority)</h2>
-          <p class="text-xs sm:text-sm text-slate-400 mt-0.5">Focus on the <span class="text-amber-300 font-semibold">3 Core Priority</span> certs first; treat Bonus certs as stretch goals if work stays manageable. Passing awards <span class="font-mono text-cyan-400">+1,000 XP</span>.</p>
-        </div>
-        <div class="flex items-center gap-2 px-3.5 py-2 rounded-xl bg-slate-900/90 border border-slate-800 text-xs font-mono">
-          <span class="text-slate-400">Unlocked:</span>
-          <span id="certs-header-count" class="text-amber-400 font-bold">0 / 5</span>
+          <h2 class="text-lg font-bold text-white">Certification Trophy Case (2027 Active Lineup)</h2>
+          <p class="text-xs text-slate-400">Zero retired exams (DP-100, AI-102, AZ-400 excluded). Prioritize the 3 Core certs first; add Bonus certs if bandwidth allows.</p>
         </div>
       </div>
-
-      <div id="certs-grid" class="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-3 gap-5">
-        <!-- Populated by JS -->
-      </div>
+      <div id="certs-container" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4"></div>
     </section>
 
-    <!-- ==================== TAB 5: FUNDAMENTALS SHIELD (19 CHECKS) ==================== -->
-    <section id="tab-fundamentals" class="tab-panel hidden space-y-6">
-      <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+    <!-- ==================== TAB 5: FUNDAMENTALS SHIELD ==================== -->
+    <section id="view-fundamentals" class="hidden space-y-5">
+      <div>
+        <h2 class="text-lg font-bold text-white">Fundamentals Shield (Anti-Gotcha Checklist)</h2>
+        <p class="text-xs text-slate-400">Master these 19 everyday fundamentals (+50 XP each) so no interviewer ever asks "how come you don't know this?"</p>
+      </div>
+      <div id="fundamentals-container" class="grid grid-cols-1 md:grid-cols-2 gap-4"></div>
+    </section>
+
+    <!-- ==================== TAB 6: PHASE 2 JOB PIPELINE ==================== -->
+    <section id="view-jobs" class="hidden space-y-5">
+      <div class="flex flex-wrap items-center justify-between gap-3">
         <div>
-          <h2 class="text-xl font-bold text-white">Fundamentals Shield (19 Anti-Gotcha Checks)</h2>
-          <p class="text-xs sm:text-sm text-slate-400 mt-0.5">Eliminate "how come you don't know this?" interview traps. Each mastered topic awards <span class="font-mono text-cyan-400">+50 XP</span>.</p>
-        </div>
-        <div class="flex items-center gap-3 px-4 py-2 rounded-xl bg-slate-900/90 border border-slate-800">
-          <div class="text-right">
-            <div class="text-[10px] font-mono uppercase text-slate-400">Shield Integrity</div>
-            <div id="shield-integrity-pct" class="text-sm font-mono font-bold text-emerald-400">0%</div>
-          </div>
-          <div class="w-24 h-2.5 rounded-full bg-slate-800 overflow-hidden">
-            <div id="shield-integrity-bar" class="h-full bg-gradient-to-r from-indigo-500 to-emerald-400 transition-all duration-300" style="width: 0%"></div>
-          </div>
+          <h2 class="text-lg font-bold text-white">Phase 2: Application & Interview Pipeline (Oct 2027+)</h2>
+          <p class="text-xs text-slate-400">Track referrals, target roles (AI Engineer, MLOps Engineer, Senior DS), interview rounds, and offers (+30 XP per application).</p>
         </div>
       </div>
 
-      <div id="fundamentals-grid" class="grid grid-cols-1 lg:grid-cols-2 gap-5">
-        <!-- Populated by JS -->
+      <!-- Add Job Form -->
+      <form onsubmit="addJob(event)" class="glass rounded-2xl p-4 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-5 gap-3">
+        <input id="job-company" required placeholder="Company (e.g., Microsoft GCC)" class="px-3 py-2 rounded-lg bg-slate-900 border border-slate-700 text-sm text-white focus:outline-none focus:border-blue-500" />
+        <input id="job-role" required placeholder="Role (e.g., AI / MLOps Engineer)" class="px-3 py-2 rounded-lg bg-slate-900 border border-slate-700 text-sm text-white focus:outline-none focus:border-blue-500" />
+        <select id="job-status" class="px-3 py-2 rounded-lg bg-slate-900 border border-slate-700 text-sm text-white focus:outline-none focus:border-blue-500">
+          <option value="Wishlist">Wishlist</option>
+          <option value="Applied" selected>Applied</option>
+          <option value="Referral Sent">Referral Sent</option>
+          <option value="Interviewing">Interviewing</option>
+          <option value="Offer">Offer</option>
+          <option value="Rejected">Rejected</option>
+        </select>
+        <input id="job-notes" placeholder="Notes / Referral / Round" class="px-3 py-2 rounded-lg bg-slate-900 border border-slate-700 text-sm text-white focus:outline-none focus:border-blue-500" />
+        <button type="submit" class="px-4 py-2 rounded-lg bg-blue-600 hover:bg-blue-500 text-white font-semibold text-sm transition">+ Add Role</button>
+      </form>
+
+      <div class="glass rounded-2xl overflow-hidden">
+        <div class="overflow-x-auto">
+          <table class="w-full text-left text-sm">
+            <thead class="bg-slate-900/90 text-xs uppercase text-slate-400 border-b border-slate-800">
+              <tr>
+                <th class="px-4 py-3">Company</th>
+                <th class="px-4 py-3">Role</th>
+                <th class="px-4 py-3">Status</th>
+                <th class="px-4 py-3">Notes</th>
+                <th class="px-4 py-3 text-right">Action</th>
+              </tr>
+            </thead>
+            <tbody id="jobs-tbody" class="divide-y divide-slate-800/70"></tbody>
+          </table>
+        </div>
       </div>
     </section>
 
   </main>
 
-  <!-- Footer -->
-  <footer class="border-t border-slate-800/70 py-5 mt-8">
-    <div class="max-w-7xl mx-auto px-4 sm:px-6 flex flex-col sm:flex-row items-center justify-between gap-2 text-xs text-slate-500">
-      <span>AI & MLOps 2027 Command Center (3-YOE Edition) • Standalone GitHub Pages Ready</span>
-      <span class="font-mono text-[11px] text-slate-500">Auto-saved to browser localStorage • Use Export/Import for cross-device sync</span>
+  <!-- ==================== QUEST DEEP-DIVE SLIDE-OVER DRAWER ==================== -->
+  <div id="drawer-backdrop" onclick="closeDrawer()" class="fixed inset-0 bg-black/65 backdrop-blur-sm z-40 hidden transition-opacity"></div>
+  <aside id="quest-drawer" class="fixed top-0 right-0 h-full w-full max-w-xl bg-slate-950 border-l border-slate-800 z-50 drawer-exit transition-transform duration-300 flex flex-col shadow-2xl">
+    <div class="p-5 border-b border-slate-800 flex items-start justify-between gap-4 bg-slate-900/60">
+      <div>
+        <div class="flex items-center gap-2 mb-1">
+          <span id="drawer-month" class="text-xs font-bold px-2 py-0.5 rounded bg-blue-500/20 text-blue-300"></span>
+          <span id="drawer-phase" class="text-xs text-slate-400"></span>
+        </div>
+        <h3 id="drawer-title" class="text-lg font-bold text-white"></h3>
+      </div>
+      <button onclick="closeDrawer()" class="p-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 text-sm">✕</button>
     </div>
-  </footer>
 
-  <!-- Standalone Application Script -->
+    <div class="flex-1 overflow-y-auto p-5 space-y-6">
+      <!-- Subtopic Progress -->
+      <div>
+        <div class="flex items-center justify-between text-xs mb-1.5">
+          <span class="font-semibold text-slate-300">3-YOE Technical Subtopics (+15 XP each)</span>
+          <span id="drawer-sub-progress" class="font-mono text-blue-400">0 / 0</span>
+        </div>
+        <div class="w-full h-2 bg-slate-800 rounded-full overflow-hidden mb-3">
+          <div id="drawer-sub-bar" class="h-full bg-gradient-to-r from-blue-500 to-emerald-500 transition-all duration-300" style="width: 0%"></div>
+        </div>
+        <div id="drawer-subtopics" class="space-y-2"></div>
+      </div>
+
+      <!-- Hands-On Milestone -->
+      <div class="p-4 rounded-xl bg-emerald-500/10 border border-emerald-500/25">
+        <div class="text-xs font-bold uppercase tracking-wider text-emerald-400 mb-1">Hands-On Proof Milestone</div>
+        <p id="drawer-milestone" class="text-sm text-slate-200 leading-relaxed"></p>
+      </div>
+
+      <!-- 3-YOE Interview Trap -->
+      <div class="p-4 rounded-xl bg-amber-500/10 border border-amber-500/25">
+        <div class="text-xs font-bold uppercase tracking-wider text-amber-400 mb-1">3-YOE Interview Trap</div>
+        <p id="drawer-trap" class="text-sm text-slate-200 leading-relaxed"></p>
+      </div>
+
+      <!-- Practical Resources -->
+      <div>
+        <h4 class="text-xs font-bold uppercase tracking-wider text-slate-400 mb-2.5">Curated Practical Resources (No Fluff)</h4>
+        <div id="drawer-resources" class="space-y-2.5"></div>
+      </div>
+    </div>
+
+    <div class="p-4 border-t border-slate-800 bg-slate-900/60 flex items-center justify-between">
+      <span class="text-xs text-slate-400">Progress saves automatically to browser</span>
+      <button id="drawer-complete-btn" class="px-4 py-2 rounded-xl text-xs font-bold transition"></button>
+    </div>
+  </aside>
+
   <script>
-    (function () {
-      const STORAGE_KEY = 'ai_mlops_2027_command_center_3yoe_v1';
-
-      // ==================== 1. STATIC ROADMAP DATA ====================
-
-      const RANK_TITLES = [
-        "Analyst",                      // L1
-        "Python & Git Practitioner",    // L2
-        "Container Cadet",              // L3
-        "MLOps Builder",                // L4
-        "CI/CD Pipeline Engineer",      // L5
-        "Spark Wrangler",               // L6
-        "Lakehouse Architect",          // L7
-        "Retrieval Specialist",         // L8
-        "Production RAG Engineer",      // L9
-        "Eval Guardian",                // L10
-        "SLM Fine-Tuner",               // L11
-        "vLLM Inference Optimizer",     // L12
-        "Agentic AI Builder",           // L13
-        "MCP Integrator",               // L14
-        "Multi-Agent Orchestrator",     // L15
-        "Production AI Engineer",       // L16
-        "FinOps & LLMOps Strategist",   // L17
-        "AI System Designer",           // L18
-        "Senior-Track AI Engineer",     // L19
-        "3-YOE High-Leverage Lead"      // L20
-      ];
-
-      // Calibrated to 9.5 hrs/week (Mon-Thu 1h, Fri Off, Sat 3h, Sun 2.5h)
-      const WEEKLY_SCHEDULE = [
-        { id: 'mon', day: 'Monday',    target: 1.0, label: 'Hands-on coding (45m) + Fundamentals review (15m)', type: 'office' },
-        { id: 'tue', day: 'Tuesday',   target: 1.0, label: 'Hands-on coding (45m) + Fundamentals review (15m)', type: 'office' },
-        { id: 'wed', day: 'Wednesday', target: 1.0, label: 'Hands-on coding (45m) + Fundamentals review (15m)', type: 'office' },
-        { id: 'thu', day: 'Thursday',  target: 1.0, label: 'Hands-on coding (45m) + Fundamentals review (15m)', type: 'office' },
-        { id: 'fri', day: 'Friday',    target: 0.0, label: 'Off / Buffer — Rest, office wrap-up, or light bug fixes', type: 'buffer' },
-        { id: 'sat', day: 'Saturday',  target: 3.0, label: 'Deep Work: Cloud deployment, Docker/CI/CD, benchmarks & READMEs', type: 'deep' },
-        { id: 'sun', day: 'Sunday',    target: 2.5, label: 'Certification study, practice exams & SQL/Python/System Design drills', type: 'cert' }
-      ];
-
-      const QUEST_MODULES = [
-        {
-          id: 'jan_feb', phase: 'phase1', timeframe: 'Jan – Feb 2027',
-          title: 'Core MLOps, Azure DevOps & Engineering Hygiene',
-          cert: 'Core Cert: Microsoft AI-300', project: 'Project #1: Automated MLOps Pricing Engine',
-          quests: [
-            { id: 'jf_1', week: 'Jan Wk 1–2', text: 'Docker (multi-stage builds, .dockerignore), Linux CLI, Git PRs, & Azure Key Vault secrets' },
-            { id: 'jf_2', week: 'Jan Wk 3–4', text: 'FastAPI (async, Pydantic, HTTP status codes, retries) + MLflow experiment tracking & model registry' },
-            { id: 'jf_3', week: 'Feb Wk 1–2', text: 'Azure DevOps YAML CI/CD (lint, pytest, deploy to Container Apps) + data/concept drift monitoring' },
-            { id: 'jf_4', week: 'Feb Wk 3–4', text: 'Deploy Project #1 (Commodity/Supply-Chain Pricing) with benchmarks + Pass Microsoft AI-300' }
-          ]
-        },
-        {
-          id: 'mar_apr', phase: 'phase1', timeframe: 'Mar – Apr 2027',
-          title: 'Big Data for ML — Spark, Databricks & Terraform IaC',
-          cert: 'Core Cert: Microsoft DP-750', project: 'Project #2: Scalable Spark Feature & Batch Inference Pipeline',
-          quests: [
-            { id: 'ma_1', week: 'Mar Wk 1–2', text: 'PySpark fundamentals & Spark UI debugging (data skew, shuffles, broadcast joins, partitioning)' },
-            { id: 'ma_2', week: 'Mar Wk 3–4', text: 'Delta Lake (Medallion: Bronze/Silver/Gold), Databricks Feature Store, & Parquet vs CSV internals' },
-            { id: 'ma_3', week: 'Apr Wk 1–2', text: 'Terraform / Bicep Infrastructure as Code (IaC) + SQL execution order & window functions' },
-            { id: 'ma_4', week: 'Apr Wk 3–4', text: 'Deploy Project #2 (Contract & Trade Analytics) + Pass Microsoft DP-750' }
-          ]
-        },
-        {
-          id: 'may_jun', phase: 'phase1', timeframe: 'May – Jun 2027',
-          title: 'Production RAG, Fine-Tuning & vLLM Serving',
-          cert: 'Bonus Cert: Databricks GenAI Engineer', project: 'Projects #3 & #4: Evaluated Hybrid RAG + Fine-Tuned SLM',
-          quests: [
-            { id: 'mj_1', week: 'May Wk 1–2', text: 'Hybrid search (vector + BM25), semantic chunking, reranking (BGE/Cohere), & citation grounding' },
-            { id: 'mj_2', week: 'May Wk 3–4', text: 'Automated evals (RAGAS / DeepEval) in CI/CD + Deploy Project #3 (Financial & Contract Reporting)' },
-            { id: 'mj_3', week: 'Jun Wk 1–2', text: 'LoRA/QLoRA fine-tuning (Unsloth/HF), quantization, & RAG vs Fine-Tuning trade-offs' },
-            { id: 'mj_4', week: 'Jun Wk 3–4', text: 'High-throughput vLLM serving + Deploy Project #4 (Document Extraction SLM) + Optional Databricks GenAI' }
-          ]
-        },
-        {
-          id: 'jul_aug', phase: 'phase1', timeframe: 'Jul – Aug 2027',
-          title: 'Agentic AI (MCP), Multi-Agent Orchestration & LLMOps',
-          cert: 'Core Cert: Microsoft AI-103', project: 'Projects #5 & #6: MCP Data Agent + Guardrailed Multi-Agent Platform',
-          quests: [
-            { id: 'ja_1', week: 'Jul Wk 1–2', text: 'Agentic workflows (LangGraph / OpenAI SDK), Model Context Protocol (MCP), & structured outputs' },
-            { id: 'ja_2', week: 'Jul Wk 3–4', text: 'Deploy Project #5 (Autonomous SQL & API Trade Agent with HITL approval)' },
-            { id: 'ja_3', week: 'Aug Wk 1–2', text: 'Multi-agent orchestration (supervisor/worker), PII/injection guardrails, Langfuse observability & FinOps routing' },
-            { id: 'ja_4', week: 'Aug Wk 3–4', text: 'Deploy Project #6 (Guardrailed Multi-Agent Platform) + Pass Microsoft AI-103' }
-          ]
-        },
-        {
-          id: 'sep', phase: 'phase1', timeframe: 'September 2027',
-          title: 'Capstone Polish, System Design & Resume Overhaul',
-          cert: 'Bonus Cert: Microsoft AI-500', project: 'Optional Project #7: Voice/Multimodal AI Capstone',
-          quests: [
-            { id: 'sep_1', week: 'Sep Wk 1', text: 'ML/AI System Design drills (batch vs streaming, RAG vs fine-tuning, evals at scale, FinOps)' },
-            { id: 'sep_2', week: 'Sep Wk 2', text: 'Daily 45m rotation: Hard SQL (window functions, gaps-and-islands) + Medium Python DSA' },
-            { id: 'sep_3', week: 'Sep Wk 3', text: 'Optional Project #7 Capstone (Real-Time Voice/Multimodal UI) + Polish all GitHub READMEs & benchmarks' },
-            { id: 'sep_4', week: 'Sep Wk 4', text: 'Rewrite 3-YOE Resume (Problem -> Trade-off -> Quantified Impact) + Optional Microsoft AI-500' }
-          ]
-        },
-        {
-          id: 'oct_plus', phase: 'phase2', timeframe: 'October 2027+',
-          title: 'Active Applications, Referrals & Q4/Q1 Offer Strategy',
-          cert: 'Application Launch', project: 'Live Interviews & Offer Negotiation',
-          quests: [
-            { id: 'oct_1', week: 'Weekly Outreach', text: 'Send 15–20 targeted applications/week + request LinkedIn referrals at GCCs & product tech firms' },
-            { id: 'oct_2', week: 'Behavioral Stories', text: 'Prepare 6 tight 3-YOE stories from real work + portfolio using Problem -> Trade-off -> Impact' },
-            { id: 'oct_3', week: 'Live Interviews', text: 'Run technical & System Design rounds, log feedback, and patch any weak spots immediately' },
-            { id: 'oct_4', week: 'Q4/Q1 Strategy', text: 'Align notice period with Q1 2028 hiring peak, benchmark 3.5-YOE comp, and lock in target offer' }
-          ]
-        }
-      ];
-
-      const PROJECTS = [
-        {
-          id: 'p1', num: 1, month: 'Jan – Feb', domain: 'Commodity & Supply-Chain Pricing',
-          name: 'Automated MLOps Pricing Engine',
-          stack: 'FastAPI • Docker • MLflow • Azure DevOps • Drift Retraining',
-          desc: 'Forecasting/pricing model served via FastAPI + Docker on Azure, tracked in MLflow registry with drift-triggered CI/CD retraining.'
-        },
-        {
-          id: 'p2', num: 2, month: 'Mar – Apr', domain: 'Contract & Trade Analytics',
-          name: 'Scalable Spark Feature & Batch Inference Pipeline',
-          stack: 'PySpark • Delta Lake • Databricks Feature Store • Terraform IaC',
-          desc: 'End-to-end PySpark feature engineering pipeline into Delta Lake & Feature Store with batch + real-time inference provisioned via Terraform.'
-        },
-        {
-          id: 'p3', num: 3, month: 'May', domain: 'Automated Financial & Contract Reporting',
-          name: 'Evaluated Hybrid RAG System',
-          stack: 'Hybrid Vector/BM25 • Reranking • RAGAS/DeepEval • CI/CD',
-          desc: 'Production Q&A engine with hybrid retrieval, BGE/Cohere reranking, citation grounding, and automated eval gates running in CI/CD.'
-        },
-        {
-          id: 'p4', num: 4, month: 'Jun', domain: 'Enterprise Document Extraction',
-          name: 'Fine-Tuned Domain SLM on vLLM',
-          stack: 'LoRA/QLoRA (7B–8B) • Unsloth/HF • vLLM • Cost Benchmark',
-          desc: 'Fine-tuned small open-source model served via vLLM for high throughput, benchmarked on latency, cost, and accuracy vs. frontier APIs.'
-        },
-        {
-          id: 'p5', num: 5, month: 'Jul', domain: 'Trade & Operations Analytics',
-          name: 'Autonomous SQL & API Data Agent via MCP',
-          stack: 'LangGraph/OpenAI SDK • MCP • SQL/API Tools • HITL',
-          desc: 'Agent connected via Model Context Protocol (MCP) to SQL databases and external APIs executing multi-step analysis with human-in-the-loop approval.'
-        },
-        {
-          id: 'p6', num: 6, month: 'Aug', domain: 'End-to-End Business Ops',
-          name: 'Guardrailed Multi-Agent Enterprise Platform',
-          stack: 'Supervisor/Worker • Langfuse • PII Guardrails • Model Routing',
-          desc: 'Multi-agent orchestration platform with full trace observability, PII/prompt-injection guardrails, semantic caching, and cost-based model routing.'
-        },
-        {
-          id: 'p7', num: 7, month: 'Sep (Optional)', domain: 'Flagship Live Demo',
-          name: 'Optional Flagship Capstone: Real-Time Voice/Multimodal AI Assistant',
-          stack: 'WebSockets • Voice/Vision AI • Load Testing • Full FinOps',
-          desc: 'Real-time multimodal/voice UI layered onto your multi-agent & MLOps stack with load testing and a complete cloud cost/latency breakdown.'
-        }
-      ];
-
-      // 5 Quality Gates per project
-      const PROJECT_GATES = [
-        { key: 'realBusiness', label: 'Real Business Workflow (No Toy Data)' },
-        { key: 'liveUrl',      label: 'Live URL / CI-CD Passing' },
-        { key: 'archDiagram',  label: 'Architecture Diagram in README' },
-        { key: 'benchmarks',   label: 'Quantified Benchmarks Logged' },
-        { key: 'cleanCode',    label: 'Clean Code (Docker + pytest)' }
-      ];
-
-      const CERTIFICATIONS = [
-        { id: 'c1', code: 'AI-300', provider: 'Microsoft',  priority: 'core',  name: 'MLOps Engineer Associate', target: 'Feb 2027', desc: 'Production ML deployment, CI/CD, drift monitoring, and model lifecycle on Azure.' },
-        { id: 'c2', code: 'DP-750', provider: 'Microsoft',  priority: 'core',  name: 'Azure Databricks Data Engineer', target: 'Apr 2027', desc: 'Apache Spark, Delta Lake, Medallion Lakehouse, and Unity Catalog at scale.' },
-        { id: 'c3', code: 'GENAI',  provider: 'Databricks', priority: 'bonus', name: 'Certified Generative AI Engineer Associate', target: 'Jun 2027', desc: 'Vendor-neutral proof of RAG, vector search, chunking, and LLM evaluation chains.' },
-        { id: 'c4', code: 'AI-103', provider: 'Microsoft',  priority: 'core',  name: 'Azure AI Apps & Agents Developer', target: 'Aug 2027', desc: 'Building production GenAI applications and tool-calling agents on Azure AI Foundry.' },
-        { id: 'c5', code: 'AI-500', provider: 'Microsoft',  priority: 'bonus', name: 'Multi-Agent AI Solutions Expert', target: 'Sep 2027', desc: 'Expert-level credential for multi-agent orchestration, governance, and enterprise AI.' }
-      ];
-
-      const FUNDAMENTALS_BUCKETS = [
-        {
-          id: 'ml', title: 'Core ML & Stats', icon: 'trending-up', color: 'cyan',
-          items: [
-            { id: 'f_ml_1', text: 'Data leakage & chronological splits (split before scaling/imputing; never random split time-series)' },
-            { id: 'f_ml_2', text: 'Imbalanced metrics: Precision vs Recall, PR-AUC vs ROC-AUC (why Accuracy is a trap)' },
-            { id: 'f_ml_3', text: 'Bias-variance tradeoff, L1 (Lasso) vs L2 (Ridge), & why trees do not need feature scaling' },
-            { id: 'f_ml_4', text: 'A/B testing: true meaning of p-values, statistical power, & why peeking ruins tests' }
-          ]
-        },
-        {
-          id: 'llm', title: 'LLM & GenAI Internals', icon: 'sparkles', color: 'indigo',
-          items: [
-            { id: 'f_llm_1', text: 'Tokens (not words), attention mechanism overview, context windows, & KV caching' },
-            { id: 'f_llm_2', text: 'Decoding controls: Temperature, Top-P, Top-K (Temp=0 for structured/SQL outputs)' },
-            { id: 'f_llm_3', text: 'Cosine similarity vs dot product & why pure vector search fails on exact IDs/acronyms' },
-            { id: 'f_llm_4', text: 'RAG vs Fine-Tuning trade-offs (new knowledge vs style/format/behavior)' }
-          ]
-        },
-        {
-          id: 'py', title: 'Python & SWE Hygiene', icon: 'code-2', color: 'emerald',
-          items: [
-            { id: 'f_py_1', text: 'Git workflows: branching, PRs, merge vs rebase, conflict resolution (no force-push to main)' },
-            { id: 'f_py_2', text: 'Concurrency: asyncio vs multithreading (I/O) vs multiprocessing (CPU / Python GIL)' },
-            { id: 'f_py_3', text: 'HTTP status codes (200/400/401/403/404/429/500/503), idempotency, & exponential backoff' },
-            { id: 'f_py_4', text: 'Virtualenvs, dependency pinning (uv/poetry), type hints, structured logging, & pytest' }
-          ]
-        },
-        {
-          id: 'ops', title: 'Docker, Cloud & Linux', icon: 'container', color: 'sky',
-          items: [
-            { id: 'f_ops_1', text: 'Docker layer caching (requirements first), .dockerignore, & non-root containers' },
-            { id: 'f_ops_2', text: 'Secrets & Security: never commit .env; use Azure Key Vault & Managed Identities' },
-            { id: 'f_ops_3', text: 'Networking basics: Ports, DNS, Public vs Private IP, VPC/VNet, & CORS errors' },
-            { id: 'f_ops_4', text: 'Linux CLI essentials: grep, tail -f, chmod permissions, ps/kill, & SSH' }
-          ]
-        },
-        {
-          id: 'sql', title: 'SQL & Data Storage', icon: 'database', color: 'amber',
-          items: [
-            { id: 'f_sql_1', text: 'SQL execution order: FROM -> WHERE -> GROUP BY -> HAVING -> SELECT -> ORDER BY' },
-            { id: 'f_sql_2', text: 'WHERE vs HAVING, UNION vs UNION ALL, & ROW_NUMBER() vs RANK() vs DENSE_RANK()' },
-            { id: 'f_sql_3', text: 'Parquet (columnar) vs CSV/JSON (row-based), DB indexes, & why SELECT * hurts prod' }
-          ]
-        }
-      ];
-
-      // ==================== 2. STATE & LOCALSTORAGE ====================
-
-      function createDefaultState() {
-        const projects = {};
-        PROJECTS.forEach(p => {
-          projects[p.id] = {
-            gates: { realBusiness: false, liveUrl: false, archDiagram: false, benchmarks: false, cleanCode: false },
-            latencyMetric: '',
-            costMetric: '',
-            accuracyMetric: '',
-            repoUrl: '',
-            demoUrl: ''
-          };
-        });
-
-        const certs = {};
-        CERTIFICATIONS.forEach(c => {
-          certs[c.id] = { status: 'locked', score: '', date: '' };
-        });
-
-        const weeklyHours = {};
-        WEEKLY_SCHEDULE.forEach(d => { weeklyHours[d.id] = 0; });
-
-        return {
-          quests: {},
-          projects,
-          certs,
-          fundamentals: {},
-          weeklyHours,
-          weeksCompleted: 0,
-          focusSessions: 0,
-          streak: 0,
-          lastActiveDate: null,
-          jobApplications: [] // [{ id, company, role, status, date }]
-        };
+    // =========================================================================
+    // DATA DEFINITIONS (JAN – DEC 2027, 3-YOE EDITION)
+    // =========================================================================
+    const QUESTS = [
+      {
+        id: 'q1', phase: 'phase1', month: 'Jan (Wks 1–2)', title: 'Docker, Linux CLI, Git & Engineering Hygiene',
+        summary: 'Multi-stage Dockerfiles, Linux troubleshooting, Git PR workflows, and Azure Key Vault / secrets management.',
+        subtopics: [
+          'Write multi-stage Dockerfiles with layer caching (copy requirements before code) & .dockerignore',
+          'Run containers as non-root user and debug with docker logs / exec',
+          'Linux CLI essentials: grep, tail -f, chmod, ps/kill, SSH, environment variables',
+          'Git workflows: feature branches, PR reviews, merge vs rebase, resolving conflicts safely',
+          'Python hygiene: uv/poetry dependency pinning, structured logging, pytest basics'
+        ],
+        milestone: 'Dockerize an existing Python ML/analytics script with a multi-stage build under 250MB, zero hardcoded secrets, and passing pytest unit tests.',
+        trap: 'Why do Docker builds suddenly become slow? Putting COPY . . before pip install invalidates Docker layer caching on every single code edit.',
+        resources: [
+          { type: 'Docs', title: 'Docker Best Practices for Python & Multi-Stage Builds', url: 'https://docs.docker.com/build/building/best-practices/', note: 'Focus on layer caching & non-root users' },
+          { type: 'YouTube', title: 'TechWorld with Nana – Docker & DevOps Tutorials', url: 'https://www.youtube.com/@TechWorldwithNana', note: 'Watch Docker crash course + Git workflows' },
+          { type: 'Guide', title: 'The Missing Semester of Your CS Education (MIT)', url: 'https://missing.csail.mit.edu/', note: 'Shell tools, scripting, and Git internals' }
+        ]
+      },
+      {
+        id: 'q2', phase: 'phase1', month: 'Jan–Feb (Wks 3–6)', title: 'FastAPI, MLflow & Azure DevOps CI/CD',
+        summary: 'Serve ML models via async FastAPI, track experiments in MLflow, and automate Azure DevOps YAML pipelines.',
+        subtopics: [
+          'FastAPI async endpoints, Pydantic request/response schemas, HTTP status codes (429/503 retries)',
+          'MLflow experiment tracking, artifact logging, and Model Registry stage transitions',
+          'Azure DevOps YAML CI/CD: automated linting (ruff), pytest, Docker build & push to ACR',
+          'Deploy containerized ML APIs to Azure Container Apps with health checks',
+          'Data & concept drift monitoring using Evidently AI + automated retraining trigger'
+        ],
+        milestone: 'Deploy Project #1 (Automated MLOps Forecasting Engine) to Azure Container Apps via a zero-click Azure DevOps YAML pipeline.',
+        trap: 'What happens if your model API silently degrades? Without input drift checks (PSI/KS test) and logged predictions, stale models destroy business metrics for weeks.',
+        resources: [
+          { type: 'GitHub', title: 'DataTalksClub MLOps Zoomcamp (Free Full Repo)', url: 'https://github.com/DataTalksClub/mlops-zoomcamp', note: 'Best practical repo for MLflow, orchestration & monitoring' },
+          { type: 'Docs', title: 'FastAPI Official User Guide', url: 'https://fastapi.tiangolo.com/tutorial/', note: 'Focus on async, Pydantic validation, and dependency injection' },
+          { type: 'Docs', title: 'Microsoft Learn – Azure DevOps YAML Pipelines', url: 'https://learn.microsoft.com/en-us/azure/devops/pipelines/', note: 'Build multi-stage Dev -> Prod YAML templates' }
+        ]
+      },
+      {
+        id: 'q3', phase: 'phase1', month: 'Feb–Mar (Wks 7–10)', title: 'PySpark Internals, Delta Lake & Databricks Feature Store',
+        summary: 'Scale ML feature pipelines with Spark UI tuning, Delta Lake Medallion architecture, and Feature Stores.',
+        subtopics: [
+          'Spark execution model: DAGs, stages, tasks, narrow vs wide transformations',
+          'Read the Spark UI: diagnose shuffles, fix data skew (salting, AQE), and use broadcast joins',
+          'Delta Lake internals: ACID transactions, time travel, Z-ordering / Liquid Clustering',
+          'Parquet columnar storage vs CSV/JSON and partition pruning for analytics speed',
+          'Databricks Feature Store for point-in-time feature joins (preventing training-serving skew)'
+        ],
+        milestone: 'Build a PySpark Bronze→Silver→Gold pipeline on Databricks processing 1M+ rows with documented Spark UI optimization before/after runtime.',
+        trap: 'Why did your Spark job fail with OutOfMemory (OOM) on 1 executor while 9 others sat idle? Classic data skew—fix it with AQE skew join or key salting.',
+        resources: [
+          { type: 'Docs', title: 'Apache Spark Performance Tuning Guide', url: 'https://spark.apache.org/docs/latest/sql-performance-tuning.html', note: 'Study AQE, broadcast joins, and caching' },
+          { type: 'Docs', title: 'Delta Lake Official Documentation', url: 'https://docs.delta.io/latest/index.html', note: 'ACID transactions, OPTIMIZE, and schema evolution' },
+          { type: 'YouTube', title: 'Advancing Analytics (Databricks & Spark Deep Dives)', url: 'https://www.youtube.com/@AdvancingAnalytics', note: 'Practical enterprise Databricks architecture patterns' }
+        ]
+      },
+      {
+        id: 'q4', phase: 'phase1', month: 'Mar (Wks 11–13)', title: 'Terraform IaC, Advanced SQL & Cert #1 (AI-300)',
+        summary: 'Automate Azure ML infrastructure with Terraform, sharpen SQL query plans, and pass Microsoft AI-300.',
+        subtopics: [
+          'Terraform fundamentals: providers, resources, remote state (Azure Blob), variables & modules',
+          'Provision Azure Storage, ACR, and Container Apps reproducibly via terraform apply',
+          'Advanced SQL: execution order, window functions (ROW_NUMBER/LAG/LEAD), CTE deduplication',
+          'SQL query execution plans, indexing strategy, and avoiding SELECT * in production',
+          'Complete AI-300 practice exams and review Azure ML workspace & MLOps governance'
+        ],
+        milestone: 'Deploy Project #2 (Scalable Spark ML Pipeline + Terraform IaC) and pass Microsoft AI-300.',
+        trap: 'Why can you not filter a window function alias inside a WHERE clause? Because SQL executes WHERE before SELECT—you must wrap it in a CTE or use QUALIFY.',
+        resources: [
+          { type: 'Docs', title: 'HashiCorp Terraform Azure Tutorials', url: 'https://developer.hashicorp.com/terraform/tutorials/azure-get-started', note: 'Build & destroy real Azure resources via code' },
+          { type: 'Guide', title: 'DataLemur SQL Interview Practice', url: 'https://datalemur.com/', note: 'Practice Hard SQL window functions & gaps-and-islands' },
+          { type: 'Docs', title: 'Microsoft Learn – Azure Machine Learning & MLOps', url: 'https://learn.microsoft.com/en-us/azure/machine-learning/', note: 'Primary reference for AI-300 MLOps workflows' }
+        ]
+      },
+      {
+        id: 'q5', phase: 'phase1', month: 'Apr (Wks 14–16)', title: 'LLM Internals, Hybrid RAG & Reranking',
+        summary: 'Go beneath the API: tokens, KV cache, hybrid vector + BM25 search, semantic chunking, and cross-encoder reranking.',
+        subtopics: [
+          'LLM internals: tokenization, attention overview, context windows, KV cache latency impact',
+          'Decoding controls: Temperature, Top-P, Top-K, and deterministic structured outputs',
+          'Chunking strategies: recursive, semantic, and parent-document retrieval with metadata filtering',
+          'Hybrid Search: combining dense embeddings (cosine) with sparse BM25 via Reciprocal Rank Fusion',
+          'Cross-encoder reranking (BGE / Cohere) to boost top-5 precision before generation'
+        ],
+        milestone: 'Build a Hybrid RAG engine over enterprise/financial documents with strict inline citations and metadata filtering.',
+        trap: 'Why does pure vector search fail when a user searches for an exact contract ID or SKU like "LDC-2026-409"? Dense embeddings blur exact tokens—always pair with BM25 keyword search.',
+        resources: [
+          { type: 'YouTube', title: 'Andrej Karpathy – Intro to LLMs & Deep Dive', url: 'https://www.youtube.com/@AndrejKarpathy', note: 'Best intuitive breakdown of LLM internals & tokenization' },
+          { type: 'Guide', title: 'Anthropic Engineering – Contextual Retrieval', url: 'https://www.anthropic.com/news/contextual-retrieval', note: 'Production technique that cuts RAG retrieval failures dramatically' },
+          { type: 'GitHub', title: 'NirDiamant RAG Techniques Repository', url: 'https://github.com/NirDiamant/RAG_Techniques', note: 'Code implementations for hybrid search, reranking, and HyDE' }
+        ]
+      },
+      {
+        id: 'q6', phase: 'phase1', month: 'Apr–May (Wks 17–19)', title: 'Automated RAG Evals, Core ML Traps & Cert #2 (DP-750)',
+        summary: 'Wire RAGAS/DeepEval into CI/CD, lock down classical ML stats traps, and pass DP-750 (or Databricks GenAI).',
+        subtopics: [
+          'Build a 50+ question golden evaluation dataset with ground-truth contexts and answers',
+          'Automate RAGAS / DeepEval metrics: Faithfulness, Answer Relevancy, Context Precision/Recall',
+          'Gate PR merges in CI/CD if hallucination rate rises or faithfulness drops below threshold',
+          'Classical ML traps: chronological time-series splits, PR-AUC vs ROC-AUC, L1/L2, A/B testing power',
+          'Pass DP-750 (Azure Databricks Data Engineer) or Databricks GenAI Engineer Associate'
+        ],
+        milestone: 'Deploy Project #3 (Evaluated Hybrid RAG System) with a live CI/CD eval scorecard + pass Cert #2.',
+        trap: 'Your stakeholder says the RAG app "feels good" on 5 prompts. At 3 YOE, vibes are unacceptable—you must show repeatable automated evals across edge cases.',
+        resources: [
+          { type: 'Docs', title: 'RAGAS Evaluation Framework Docs', url: 'https://docs.ragas.io/', note: 'Implement faithfulness & context recall metrics' },
+          { type: 'Docs', title: 'DeepEval (Pytest for LLMs)', url: 'https://docs.confident-ai.com/', note: 'Run LLM unit tests directly inside GitHub Actions / Azure DevOps' },
+          { type: 'Guide', title: 'Hamel Husain – Your AI Product Needs Evals', url: 'https://hamel.dev/blog/posts/evals/', note: 'Must-read production guide on practical LLM evals' }
+        ]
+      },
+      {
+        id: 'q7', phase: 'phase1', month: 'May–Jun (Wks 20–22)', title: 'LoRA/QLoRA Fine-Tuning & vLLM Serving',
+        summary: 'Fine-tune a 7B–8B Small Language Model (SLM), quantize it, serve with vLLM, and benchmark cost vs frontier APIs.',
+        subtopics: [
+          'RAG vs Fine-Tuning decision framework: knowledge injection vs style/format/latency optimization',
+          'LoRA & QLoRA mechanics (rank, alpha, target modules) using Unsloth / Hugging Face PEFT',
+          'Synthetic dataset curation, data cleaning, and train/eval split for instruction tuning',
+          'High-throughput serving with vLLM (PagedAttention, continuous batching, quantization AWQ/GGUF)',
+          'Benchmark tokens/sec, p95 latency, accuracy, and cost per 1M tokens vs GPT-4o / Claude'
+        ],
+        milestone: 'Deploy & benchmark Project #4 (Fine-Tuned Domain SLM on vLLM) with a cost-vs-accuracy comparison table.',
+        trap: 'When should you fine-tune instead of using RAG? Never fine-tune to memorize frequently changing facts—fine-tune to enforce strict JSON/SQL schemas or slash API costs on narrow tasks.',
+        resources: [
+          { type: 'GitHub', title: 'Unsloth – 2x Faster LoRA/QLoRA Fine-Tuning', url: 'https://github.com/unslothai/unsloth', note: 'Free Colab notebooks to fine-tune Llama/Qwen 7B-8B models' },
+          { type: 'Docs', title: 'vLLM Official Documentation', url: 'https://docs.vllm.ai/en/latest/', note: 'Study PagedAttention & OpenAI-compatible serving server' },
+          { type: 'Guide', title: 'Hugging Face PEFT Documentation', url: 'https://huggingface.co/docs/peft/index', note: 'Understand LoRA parameters and adapter merging' }
+        ]
+      },
+      {
+        id: 'q8', phase: 'phase1', month: 'Jun (Wks 23–25)', title: 'Agentic AI, Tool Calling & Model Context Protocol (MCP)',
+        summary: 'Build stateful agents with LangGraph/OpenAI SDK, MCP servers, Pydantic structured outputs, and human-in-the-loop safety.',
+        subtopics: [
+          'ReAct & tool-calling loops: schema design, error recovery, and max-iteration safeguards',
+          'Model Context Protocol (MCP): build a custom MCP server exposing SQL + REST API tools',
+          'LangGraph state graphs: nodes, conditional edges, checkpointers, and short/long-term memory',
+          'Human-in-the-loop (HITL) interrupts before executing destructive or high-stakes actions',
+          'Structured outputs with Pydantic to guarantee valid tool arguments and UI payloads'
+        ],
+        milestone: 'Deploy Project #5 (Autonomous SQL & API Enterprise Agent connected via MCP with HITL approval).',
+        trap: 'How do you stop a SQL-generating agent from running DROP TABLE or leaking unauthorized rows? Use read-only DB roles, parameterized query allowlists, and HITL gates.',
+        resources: [
+          { type: 'Docs', title: 'Model Context Protocol (MCP) Official Docs', url: 'https://modelcontextprotocol.io/introduction', note: 'Build your own Python MCP server in under an hour' },
+          { type: 'Docs', title: 'LangGraph Tutorials & Concepts', url: 'https://langchain-ai.github.io/langgraph/', note: 'Focus on state persistence, cycles, and human-in-the-loop' },
+          { type: 'Guide', title: 'Anthropic – Building Effective Agents', url: 'https://www.anthropic.com/research/building-effective-agents', note: 'Essential 3-YOE architecture guide: workflows vs autonomous agents' }
+        ]
+      },
+      {
+        id: 'q9', phase: 'phase1', month: 'Jul (Wks 26–28)', title: 'Cert #3 (AI-103) & Multi-Agent Orchestration',
+        summary: 'Pass Microsoft AI-103 and architect supervisor/worker multi-agent patterns with clean state handoffs.',
+        subtopics: [
+          'Azure AI Foundry SDK: prompt flow, agent service, safety filters, and evaluation pipelines',
+          'Pass Microsoft AI-103 (Azure AI Apps & Agents Developer Associate)',
+          'Multi-agent architectures: Supervisor/Worker, Router, and Handoff patterns',
+          'Preventing infinite agent loops, context bloat, and compounding tool-call latency',
+          'Testing agent trajectories (did the agent call the right tools in the right order?)'
+        ],
+        milestone: 'Pass Core Cert #3 (Microsoft AI-103) and wire the core multi-agent supervisor workflow.',
+        trap: 'Why do multi-agent systems fail in production? Every extra agent hop adds latency, cost, and error compounding—only split into multiple agents when tools or prompts genuinely conflict.',
+        resources: [
+          { type: 'Docs', title: 'Microsoft Learn – Azure AI Foundry Documentation', url: 'https://learn.microsoft.com/en-us/azure/ai-foundry/', note: 'Core study hub for AI-103 exam objectives' },
+          { type: 'GitHub', title: 'OpenAI Agents SDK (Python)', url: 'https://github.com/openai/openai-agents-python', note: 'Clean, lightweight multi-agent handoffs and guardrails' },
+          { type: 'Docs', title: 'LangGraph Multi-Agent Architectures', url: 'https://langchain-ai.github.io/langgraph/concepts/multi_agent/', note: 'Compare supervisor vs swarm vs hierarchical designs' }
+        ]
+      },
+      {
+        id: 'q10', phase: 'phase1', month: 'Jul–Aug (Wks 29–31)', title: 'LLMOps, Guardrails, Observability & FinOps',
+        summary: 'Add Langfuse/Phoenix tracing, PII/injection guardrails, semantic caching, and cost-based model routing.',
+        subtopics: [
+          'End-to-end LLM tracing (Langfuse / Arize Phoenix): spans, token counts, cost per session',
+          'Input/Output Guardrails: PII redaction (Presidio), prompt injection detection, topic boundaries',
+          'FinOps: semantic caching (Redis/Qdrant) for recurring queries to cut latency & spend',
+          'Model Routing: route simple queries to fast/cheap SLMs and complex reasoning to frontier models',
+          'Fallback chains & circuit breakers when an LLM provider returns 429 or 503 errors'
+        ],
+        milestone: 'Deploy Project #6 (Guardrailed Multi-Agent Platform) with logged cost reduction % and p95 latency.',
+        trap: 'How do you cut an LLM bill by 50% without hurting accuracy? Combine prompt caching, semantic caching for frequent intents, and routing 70% of simple tasks to a small model.',
+        resources: [
+          { type: 'Docs', title: 'Langfuse Open-Source LLM Observability', url: 'https://langfuse.com/docs', note: 'Self-host or cloud free tier for full agent trace logging' },
+          { type: 'GitHub', title: 'Microsoft Presidio (PII Detection & Anonymization)', url: 'https://github.com/microsoft/presidio', note: 'Production-grade PII scrubbing before sending prompts to LLMs' },
+          { type: 'GitHub', title: 'LiteLLM Proxy (Model Routing & Fallbacks)', url: 'https://github.com/BerriAI/litellm', note: 'Unified gateway for routing, budgets, and provider fallbacks' }
+        ]
+      },
+      {
+        id: 'q11', phase: 'phase1', month: 'Aug–Sep (Wks 32–35)', title: 'Flagship Capstone & Optional Bonus Certs',
+        summary: 'Build the real-time WebSocket/Voice multimodal capstone and optionally knock out Bonus Certs (Databricks GenAI / AI-500).',
+        subtopics: [
+          'Real-time streaming UX over WebSockets (token streaming + live tool-execution status)',
+          'Unify MLOps forecasting + Hybrid RAG + Guardrailed Multi-Agent assistant into one demo',
+          'Load testing with Locust / k6 to measure concurrent users, p95 latency, and failure rates',
+          'Write executive-grade GitHub READMEs with architecture diagrams (Excalidraw/Mermaid) & metrics',
+          'Optional: Pass Bonus Cert #4 (Databricks GenAI) or #5 (Microsoft AI-500) if projects are solid'
+        ],
+        milestone: 'Deploy Project #7 (Flagship Real-Time Multimodal/Voice Multi-Agent Capstone) with load-test results.',
+        trap: 'Recruiters spend 30 seconds on a GitHub repo. If your README lacks a clear architecture diagram, live demo GIF/URL, and quantified benchmarks, they close the tab.',
+        resources: [
+          { type: 'Docs', title: 'Locust – Python Load Testing Framework', url: 'https://docs.locust.io/en/stable/', note: 'Benchmark your FastAPI & Agent endpoints under concurrency' },
+          { type: 'Guide', title: 'Excalidraw (Clean Architecture Diagrams)', url: 'https://excalidraw.com/', note: 'Create crisp system diagrams for every project README' },
+          { type: 'Guide', title: 'Chip Huyen – AI Engineering & Production ML Blog', url: 'https://huyenchip.com/blog/', note: 'Gold standard for 3-YOE system architecture framing' }
+        ]
+      },
+      {
+        id: 'q12', phase: 'phase1', month: 'Sep (Wks 36–39)', title: 'Pre-Launch Polish: System Design, DSA & Resume Overhaul',
+        summary: 'Reframe 3.5 years of work into Problem → Trade-off → Impact bullets and drill ML/AI System Design + SQL/Python.',
+        subtopics: [
+          'Rewrite resume: 3+ yrs real business work + 6–7 benchmarked repos + active 2027 certs',
+          'ML & AI System Design drills: RAG vs Fine-tuning, real-time fraud/pricing, evals at scale',
+          'Python DSA (Medium): Arrays, Hash Maps, Two Pointers, Sliding Window, Trees/BFS basics',
+          'Hard SQL drills: Window functions, retention cohorts, deduplication, query optimization',
+          'Prepare 6 tight STAR behavioral stories emphasizing trade-offs, ambiguity, and business ROI'
+        ],
+        milestone: 'Finalize ATS-tested resume, polished LinkedIn profile, and complete 3 timed mock system design walkthroughs.',
+        trap: 'Never describe your past non-tech job as "just dashboards and scripts." Frame it as owning end-to-end data pipelines, stakeholder scoping, and measurable business impact.',
+        resources: [
+          { type: 'GitHub', title: 'Chip Huyen – Machine Learning Interviews Book', url: 'https://github.com/huyenchip/ml-interviews-book', note: 'Free prep guide for ML fundamentals & system design' },
+          { type: 'Guide', title: 'NeetCode 150 (Python Patterns)', url: 'https://neetcode.io/practice', note: 'Focus on Arrays, Hashing, Sliding Window, and Graphs' },
+          { type: 'GitHub', title: 'Eugene Yan – Applied ML & LLM System Design Papers', url: 'https://github.com/eugeneyan/applied-ml', note: 'Real production case studies from Netflix, Uber, Airbnb, Amazon' }
+        ]
+      },
+      {
+        id: 'q13', phase: 'phase2', month: 'Oct 2027', title: 'Launch Applications & Referral Sprint',
+        summary: 'Shift 100% to applications, warm LinkedIn referrals across GCCs & product startups, and initial tech screens.',
+        subtopics: [
+          'Target 15–20 high-fit roles/week (AI Engineer, MLOps Engineer, Applied Scientist, DS-2)',
+          'Send 5–10 tailored referral messages/week to hiring managers & engineers with live demo links',
+          'Log every application, referral, and feedback point in the Phase 2 Job Pipeline tab',
+          'Daily 45-min warm-up: 1 SQL problem + 1 Python problem + 1 system design trade-off review'
+        ],
+        milestone: 'Submit 60+ targeted applications with referrals and convert to first technical & system design rounds.',
+        trap: 'Cold-applying on portals has the lowest response rate. Attaching a 2-sentence note + live deployed demo link to a hiring manager or peer referral triples callback rates.',
+        resources: [
+          { type: 'Guide', title: 'Tech Interview Handbook (Resume & Behavioral)', url: 'https://www.techinterviewhandbook.org/', note: 'Proven templates for concise, impact-first resumes' },
+          { type: 'Guide', title: 'Levels.fyi (India GCC & Tech Comp Benchmarks)', url: 'https://www.levels.fyi/', note: 'Research 3-YOE AI/ML compensation bands before negotiating' }
+        ]
+      },
+      {
+        id: 'q14', phase: 'phase2', month: 'Nov–Dec 2027', title: 'Active Interviewing, Feedback Loops & Offers',
+        summary: 'Run live system design & debugging rounds, patch any exposed gaps immediately, and negotiate offers for Q1 join.',
+        subtopics: [
+          'Post-mortem every interview within 24 hours: log every missed question and patch it immediately',
+          'Practice live debugging scenarios (RAG retrieval misses, Spark OOM, model drift alerts)',
+          'Navigate festive/year-end scheduling smoothly; align 60–90 day notice period for Jan 2028 join',
+          'Compare offers on total comp, production AI ownership, engineering culture, and growth trajectory'
+        ],
+        milestone: 'Secure competing 3-YOE AI / MLOps offers and negotiate with leverage.',
+        trap: 'Never bluff in a 3-YOE interview. Saying "I haven\'t used X in production, but conceptually it works like Y and here is how I\'d evaluate it" earns huge respect.',
+        resources: [
+          { type: 'Guide', title: 'Haseeb Qureshi – Ten Rules for Negotiating a Job Offer', url: 'https://haseebq.com/my-ten-rules-for-negotiating-a-job-offer/', note: 'Best practical playbook for offer negotiation' }
+        ]
       }
+    ];
 
-      function mergeStateWithDefaults(saved) {
-        const def = createDefaultState();
-        if (!saved || typeof saved !== 'object') return def;
+    const PROJECTS = [
+      {
+        id: 'p1', num: 1, month: 'Jan–Feb', title: 'Automated MLOps Forecasting Engine',
+        domain: 'Enterprise Supply-Chain / Commodity Price Forecasting',
+        stack: 'LightGBM/XGBoost • FastAPI • MLflow • Docker • Azure DevOps • Evidently',
+        benchmarkPlaceholder: 'e.g., p95 latency 42ms, drift auto-retrain in 6m, MAPE -8.4%'
+      },
+      {
+        id: 'p2', num: 2, month: 'Feb–Mar', title: 'Scalable Spark Feature & Inference Pipeline',
+        domain: 'Enterprise Trade / Transaction Analytics at Scale',
+        stack: 'PySpark • Databricks • Delta Lake • Feature Store • Terraform',
+        benchmarkPlaceholder: 'e.g., Cut Spark runtime 52% via broadcast join & Z-order, 100% IaC'
+      },
+      {
+        id: 'p3', num: 3, month: 'Apr–May', title: 'Evaluated Hybrid RAG Knowledge System',
+        domain: 'Enterprise Contract, Policy & Market Research Q&A',
+        stack: 'Hybrid Vector + BM25 • Reranker • RAGAS/DeepEval • CI/CD Gate',
+        benchmarkPlaceholder: 'e.g., Faithfulness 0.94, +21% recall vs naive RAG, CI blocks <0.85'
+      },
+      {
+        id: 'p4', num: 4, month: 'May–Jun', title: 'Fine-Tuned Domain Small Language Model',
+        domain: 'Structured Financial / Trade Entity Extraction & SQL Gen',
+        stack: 'LoRA/QLoRA (Unsloth) • 7B–8B SLM • vLLM • Benchmark Suite',
+        benchmarkPlaceholder: 'e.g., 78% lower cost/1M tokens vs frontier API at 96% schema accuracy'
+      },
+      {
+        id: 'p5', num: 5, month: 'Jun', title: 'Autonomous SQL & API Enterprise Agent (MCP)',
+        domain: 'Conversational Operations & Contract Analytics Assistant',
+        stack: 'LangGraph / OpenAI SDK • Custom MCP Server • Pydantic • HITL',
+        benchmarkPlaceholder: 'e.g., 92% tool-call accuracy across 40 multi-step SQL+API evals'
+      },
+      {
+        id: 'p6', num: 6, month: 'Jul–Aug', title: 'Guardrailed Multi-Agent LLMOps Platform',
+        domain: 'Multi-Department Research, Compliance & Reporting Agents',
+        stack: 'Supervisor/Worker Agents • Langfuse • Presidio PII • Semantic Cache',
+        benchmarkPlaceholder: 'e.g., Cut LLM cost 48% via model routing + cache, 0 PII leaks'
+      },
+      {
+        id: 'p7', num: 7, month: 'Aug–Sep', title: 'Flagship Real-Time Multimodal/Voice Capstone',
+        domain: 'Unified Executive Command Assistant (Forecasting + RAG + Agents)',
+        stack: 'WebSockets • Streaming UI • Locust Load Test • Full Azure Stack',
+        benchmarkPlaceholder: 'e.g., 50 concurrent users @ 1.1s TTFT, full cloud cost breakdown'
+      }
+    ];
 
-        const mergedProjects = { ...def.projects };
-        if (saved.projects) {
-          PROJECTS.forEach(p => {
-            if (saved.projects[p.id]) {
-              mergedProjects[p.id] = {
-                ...def.projects[p.id],
-                ...saved.projects[p.id],
-                gates: { ...def.projects[p.id].gates, ...(saved.projects[p.id].gates || {}) }
-              };
-            }
-          });
-        }
+    const PROJECT_GATES = [
+      { key: 'live', label: 'Live URL / Passing CI/CD Badge' },
+      { key: 'arch', label: 'Architecture Diagram in README' },
+      { key: 'metrics', label: 'Quantified Metrics (Cost/Latency/Evals)' },
+      { key: 'clean', label: 'Dockerized + pytest + Zero Secrets' }
+    ];
 
-        const mergedCerts = { ...def.certs };
-        if (saved.certs) {
-          CERTIFICATIONS.forEach(c => {
-            if (saved.certs[c.id]) {
-              mergedCerts[c.id] = { ...def.certs[c.id], ...saved.certs[c.id] };
-            }
-          });
-        }
+    const CERTS = [
+      { id: 'c1', code: 'Microsoft AI-300', name: 'Azure MLOps Engineer Associate', priority: 'Core', target: 'Mar 2027', desc: 'Replaces retired DP-100. Proves production ML deployment, CI/CD, and drift monitoring.' },
+      { id: 'c2', code: 'Microsoft DP-750', name: 'Azure Databricks Data Engineer', priority: 'Core', target: 'May 2027', desc: 'Validates PySpark, Delta Lake, and enterprise Azure Lakehouse engineering.' },
+      { id: 'c3', code: 'Microsoft AI-103', name: 'Azure AI Apps & Agents Developer', priority: 'Core', target: 'Jul 2027', desc: 'Replaces retired AI-102. Proves building GenAI apps & agents on Azure AI Foundry.' },
+      { id: 'c4', code: 'Databricks GenAI', name: 'Generative AI Engineer Associate', priority: 'Bonus', target: 'Aug 2027', desc: 'Vendor-neutral proof of RAG, vector search, chunking, and LLM chains.' },
+      { id: 'c5', code: 'Microsoft AI-500', name: 'Multi-Agent AI Solutions Expert', priority: 'Bonus', target: 'Sep 2027', desc: 'Expert-level credential for multi-agent orchestration & enterprise AI governance.' }
+    ];
 
+    const FUNDAMENTALS = [
+      {
+        bucket: '1. Core ML & Statistics Traps',
+        items: [
+          { id: 'f1', text: 'Data Leakage: split before scaling/imputing; chronological splits for time-series' },
+          { id: 'f2', text: 'Imbalanced Metrics: why Accuracy lies; Precision vs Recall; PR-AUC vs ROC-AUC' },
+          { id: 'f3', text: 'Bias-Variance tradeoff, L1 (Lasso) vs L2 (Ridge), why trees ignore feature scaling' },
+          { id: 'f4', text: 'A/B Testing: p-values, statistical power, and why early peeking invalidates tests' }
+        ]
+      },
+      {
+        bucket: '2. LLM & GenAI Internals',
+        items: [
+          { id: 'f5', text: 'Tokens, context windows, attention basics, and KV caching impact on latency' },
+          { id: 'f6', text: 'Decoding controls: Temperature, Top-P, Top-K (Temp=0 for SQL/JSON)' },
+          { id: 'f7', text: 'Cosine similarity vs dot product & why pure vector search fails on exact IDs' },
+          { id: 'f8', text: 'RAG vs Fine-Tuning: new knowledge (RAG) vs style/format/cost (Fine-Tuning)' }
+        ]
+      },
+      {
+        bucket: '3. Python & Software Hygiene',
+        items: [
+          { id: 'f9', text: 'Git beyond push/pull: branching, PRs, merge vs rebase, conflict resolution' },
+          { id: 'f10', text: 'Concurrency: asyncio vs multithreading (I/O) vs multiprocessing (CPU/GIL)' },
+          { id: 'f11', text: 'HTTP status codes (401 vs 403, 429, 503), idempotency, exponential backoff' },
+          { id: 'f12', text: 'Clean code: uv/poetry pinning, type hints, structured logging, pytest' }
+        ]
+      },
+      {
+        bucket: '4. Docker, Cloud & Linux Basics',
+        items: [
+          { id: 'f13', text: 'Docker layer caching, multi-stage builds, .dockerignore, non-root containers' },
+          { id: 'f14', text: 'Secrets security: never commit .env; use Azure Key Vault & Managed Identities' },
+          { id: 'f15', text: 'Networking: ports, DNS, Public vs Private IP, VNet/VPC, and CORS' },
+          { id: 'f16', text: 'Linux CLI: grep, tail -f, chmod, ps/kill, SSH troubleshooting' }
+        ]
+      },
+      {
+        bucket: '5. SQL & Data Storage',
+        items: [
+          { id: 'f17', text: 'SQL Execution Order: FROM -> WHERE -> GROUP BY -> HAVING -> SELECT -> ORDER BY' },
+          { id: 'f18', text: 'WHERE vs HAVING, UNION vs UNION ALL, ROW_NUMBER() vs RANK() vs DENSE_RANK()' },
+          { id: 'f19', text: 'Parquet (columnar) vs CSV/JSON, database indexes, why SELECT * hurts prod' }
+        ]
+      }
+    ];
+
+    const DAYS = [
+      { key: 'Mon', target: 1.0 },
+      { key: 'Tue', target: 1.0 },
+      { key: 'Wed', target: 1.0 },
+      { key: 'Thu', target: 1.0 },
+      { key: 'Fri', target: 0.0 },
+      { key: 'Sat', target: 3.0 },
+      { key: 'Sun', target: 2.5 }
+    ];
+
+    const RANKS = [
+      'Apprentice', 'Script Kiddie', 'Pipeline Builder', 'Docker Mechanic',
+      'MLOps Practitioner', 'Spark Tamer', 'Lakehouse Architect', 'RAG Engineer',
+      'Eval Guardian', 'SLM Tuner', 'MCP Integrator', 'Agent Orchestrator',
+      'LLMOps Specialist', 'FinOps Strategist', 'Production AI Eng', 'Senior AI Builder',
+      'Staff-Track Mind', 'Systems Architect', '3-YOE Unicorn', 'Principal Ready'
+    ];
+
+    // =========================================================================
+    // STATE MANAGEMENT (LOCALSTORAGE)
+    // =========================================================================
+    const STORAGE_KEY = 'ai_mlops_2027_3yoe_v2';
+
+    function defaultState() {
+      const weeklyHours = {};
+      DAYS.forEach(d => weeklyHours[d.key] = 0);
+      const projects = {};
+      PROJECTS.forEach(p => projects[p.id] = { gates: { live: false, arch: false, metrics: false, clean: false }, repo: '', demo: '', benchmark: '' });
+      const certs = {};
+      CERTS.forEach(c => certs[c.id] = { status: 'Locked', score: '', date: '' });
+      return {
+        completedQuests: {},
+        completedSubtopics: {},
+        projects,
+        certs,
+        fundamentals: {},
+        weeklyHours,
+        focusSessions: 0,
+        streak: 0,
+        lastActiveDate: null,
+        jobs: [],
+        lastLevel: 1
+      };
+    }
+
+    function loadState() {
+      try {
+        const raw = localStorage.getItem(STORAGE_KEY);
+        if (!raw) return defaultState();
+        const parsed = JSON.parse(raw);
+        const def = defaultState();
         return {
           ...def,
-          ...saved,
-          quests: { ...(saved.quests || {}) },
-          projects: mergedProjects,
-          certs: mergedCerts,
-          fundamentals: { ...(saved.fundamentals || {}) },
-          weeklyHours: { ...def.weeklyHours, ...(saved.weeklyHours || {}) },
-          jobApplications: Array.isArray(saved.jobApplications) ? saved.jobApplications : []
+          ...parsed,
+          projects: { ...def.projects, ...(parsed.projects || {}) },
+          certs: { ...def.certs, ...(parsed.certs || {}) },
+          weeklyHours: { ...def.weeklyHours, ...(parsed.weeklyHours || {}) }
         };
+      } catch {
+        return defaultState();
       }
+    }
 
-      function loadState() {
-        try {
-          const raw = localStorage.getItem(STORAGE_KEY);
-          if (!raw) return createDefaultState();
-          return mergeStateWithDefaults(JSON.parse(raw));
-        } catch (err) {
-          console.error('Failed to load state from localStorage:', err);
-          return createDefaultState();
-        }
+    let state = loadState();
+    let currentTab = 'overview';
+    let questFilter = 'all';
+    let activeDrawerQuestId = null;
+
+    function touchStreak() {
+      const today = new Date().toISOString().slice(0, 10);
+      if (state.lastActiveDate === today) return;
+      if (state.lastActiveDate) {
+        const prev = new Date(state.lastActiveDate);
+        const curr = new Date(today);
+        const diffDays = Math.round((curr - prev) / 86400000);
+        state.streak = diffDays === 1 ? state.streak + 1 : 1;
+      } else {
+        state.streak = 1;
       }
+      state.lastActiveDate = today;
+    }
 
-      let state = loadState();
-      let previousLevel = 1;
-      let activeTab = 'overview';
-      let questFilter = 'all';
-      let questModuleFilter = 'all';
-      let expandedModules = { jan_feb: true, mar_apr: false, may_jun: false, jul_aug: false, sep: false, oct_plus: false };
-
-      // Focus timer state
-      let timerPresetMinutes = 25;
-      let timerSecondsLeft = 25 * 60;
-      let timerRunning = false;
-      let timerInterval = null;
-
-      // ==================== 3. CONFETTI, TOAST & MODAL ====================
-
-      function fireConfetti(particleCount = 90) {
-        if (typeof confetti === 'function') {
-          confetti({
-            particleCount,
-            spread: 75,
-            origin: { y: 0.6 },
-            colors: ['#818CF8', '#22D3EE', '#10B981', '#F59E0B', '#F43F5E']
-          });
-        }
+    function saveState(checkLevelUp = true) {
+      touchStreak();
+      const { level } = calcXP();
+      if (checkLevelUp && level > (state.lastLevel || 1)) {
+        state.lastLevel = level;
+        fireConfetti();
+      } else if (level < (state.lastLevel || 1)) {
+        state.lastLevel = level;
       }
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
+      renderAll();
+    }
 
-      function showToast(title, subtitle = '', tone = 'indigo') {
-        const container = document.getElementById('toast-container');
-        const toneStyles = {
-          indigo: 'border-indigo-500/50 bg-slate-900/95 text-indigo-300',
-          cyan: 'border-cyan-500/50 bg-slate-900/95 text-cyan-300',
-          emerald: 'border-emerald-500/50 bg-slate-900/95 text-emerald-300',
-          amber: 'border-amber-500/50 bg-slate-900/95 text-amber-300'
-        };
-        const toast = document.createElement('div');
-        toast.className = `pointer-events-auto rounded-xl border px-4 py-3 shadow-2xl backdrop-blur-md transition-all duration-300 translate-y-2 opacity-0 ${toneStyles[tone] || toneStyles.indigo}`;
-        toast.innerHTML = `
-          <div class="text-xs font-bold tracking-wide">${title}</div>
-          ${subtitle ? `<div class="text-[11px] text-slate-300 mt-0.5">${subtitle}</div>` : ''}
-        `;
-        container.appendChild(toast);
-        requestAnimationFrame(() => toast.classList.remove('translate-y-2', 'opacity-0'));
-        setTimeout(() => {
-          toast.classList.add('translate-y-2', 'opacity-0');
-          setTimeout(() => toast.remove(), 300);
-        }, 3200);
+    function fireConfetti() {
+      if (typeof confetti === 'function') {
+        confetti({ particleCount: 75, spread: 70, origin: { y: 0.65 } });
       }
+    }
 
-      let modalConfirmCallback = null;
-      function openConfirmModal(title, message, onConfirm) {
-        document.getElementById('modal-title').textContent = title;
-        document.getElementById('modal-message').textContent = message;
-        modalConfirmCallback = onConfirm;
-        const modal = document.getElementById('confirm-modal');
-        modal.classList.remove('hidden');
-        modal.classList.add('flex');
-      }
-
-      function closeConfirmModal() {
-        const modal = document.getElementById('confirm-modal');
-        modal.classList.add('hidden');
-        modal.classList.remove('flex');
-        modalConfirmCallback = null;
-      }
-
-      document.getElementById('modal-cancel').addEventListener('click', closeConfirmModal);
-      document.getElementById('modal-confirm').addEventListener('click', () => {
-        if (modalConfirmCallback) modalConfirmCallback();
-        closeConfirmModal();
+    // =========================================================================
+    // XP, LEVEL & READINESS CALCULATIONS
+    // =========================================================================
+    function calcXP() {
+      let xp = 0;
+      xp += Object.values(state.completedQuests).filter(Boolean).length * 100;
+      xp += Object.values(state.completedSubtopics).filter(Boolean).length * 15;
+      PROJECTS.forEach(p => {
+        const g = state.projects[p.id]?.gates || {};
+        if (g.live && g.arch && g.metrics && g.clean) xp += 500;
       });
+      CERTS.forEach(c => {
+        if (state.certs[c.id]?.status === 'Passed') xp += 1000;
+      });
+      xp += Object.values(state.fundamentals).filter(Boolean).length * 50;
+      xp += (state.focusSessions || 0) * 25;
+      xp += (state.jobs || []).length * 30;
 
-      // ==================== 4. GAMIFICATION METRICS & PERSISTENCE ====================
+      const xpPerLevel = 650;
+      const level = Math.min(20, Math.floor(xp / xpPerLevel) + 1);
+      const currentLevelXP = xp % xpPerLevel;
+      const pct = level === 20 ? 100 : Math.round((currentLevelXP / xpPerLevel) * 100);
+      const rank = RANKS[level - 1] || 'Principal Ready';
+      return { xp, level, pct, rank };
+    }
 
-      function isProjectDeployed(projState) {
-        if (!projState || !projState.gates) return false;
-        return PROJECT_GATES.every(g => !!projState.gates[g.key]);
-      }
+    function calcReadiness() {
+      const qDone = Object.values(state.completedQuests).filter(Boolean).length;
+      const pDone = PROJECTS.filter(p => {
+        const g = state.projects[p.id]?.gates || {};
+        return g.live && g.arch && g.metrics && g.clean;
+      }).length;
+      const coreCertsDone = CERTS.filter(c => c.priority === 'Core' && state.certs[c.id]?.status === 'Passed').length;
+      const fDone = Object.values(state.fundamentals).filter(Boolean).length;
 
-      function computeMetrics() {
-        let totalQuests = 0;
-        let completedQuests = 0;
-        QUEST_MODULES.forEach(m => {
-          m.quests.forEach(q => {
-            totalQuests++;
-            if (state.quests[q.id]) completedQuests++;
-          });
-        });
+      // Weighted for 3-YOE bar: Projects 40%, Quests 25%, Core Certs 20%, Fundamentals 15%
+      const score =
+        (Math.min(pDone, 5) / 5) * 40 +
+        (qDone / QUESTS.length) * 25 +
+        (coreCertsDone / 3) * 20 +
+        (fDone / 19) * 15;
+      return Math.min(100, Math.round(score));
+    }
 
-        let deployedProjects = 0;
-        PROJECTS.forEach(p => {
-          if (isProjectDeployed(state.projects[p.id])) deployedProjects++;
-        });
+    // =========================================================================
+    // RENDERING
+    // =========================================================================
+    function renderHUD() {
+      const { xp, level, pct, rank } = calcXP();
+      document.getElementById('hud-level').textContent = `LVL ${level} • ${rank}`;
+      document.getElementById('hud-xp').textContent = `${xp.toLocaleString()} XP`;
+      document.getElementById('hud-xp-bar').style.width = `${pct}%`;
+      document.getElementById('hud-readiness').textContent = `${calcReadiness()}%`;
+      document.getElementById('hud-streak').textContent = `${state.streak || 0}d`;
 
-        let passedCerts = 0;
-        let passedCoreCerts = 0;
-        CERTIFICATIONS.forEach(c => {
-          if (state.certs[c.id]?.status === 'passed') {
-            passedCerts++;
-            if (c.priority === 'core') passedCoreCerts++;
-          }
-        });
+      const launch = new Date('2027-10-01T00:00:00');
+      const now = new Date();
+      const diff = Math.ceil((launch - now) / 86400000);
+      document.getElementById('hud-countdown').textContent = diff > 0 ? `${diff}d` : 'LIVE!';
+    }
 
-        let totalFundamentals = 0;
-        let masteredFundamentals = 0;
-        FUNDAMENTALS_BUCKETS.forEach(b => {
-          b.items.forEach(item => {
-            totalFundamentals++;
-            if (state.fundamentals[item.id]) masteredFundamentals++;
-          });
-        });
+    function renderOverview() {
+      const qDone = Object.values(state.completedQuests).filter(Boolean).length;
+      const subDone = Object.values(state.completedSubtopics).filter(Boolean).length;
+      const pDone = PROJECTS.filter(p => {
+        const g = state.projects[p.id]?.gates || {};
+        return g.live && g.arch && g.metrics && g.clean;
+      }).length;
+      const cDone = CERTS.filter(c => state.certs[c.id]?.status === 'Passed').length;
+      const fDone = Object.values(state.fundamentals).filter(Boolean).length;
 
-        const focusXP = (state.focusSessions || 0) * 25;
-        const totalXP =
-          completedQuests * 100 +
-          deployedProjects * 500 +
-          passedCerts * 1000 +
-          masteredFundamentals * 50 +
-          focusXP;
+      document.getElementById('stat-quests').textContent = `${qDone} / ${QUESTS.length}`;
+      document.getElementById('stat-subtopics').textContent = `${subDone} subtopics checked`;
+      document.getElementById('stat-projects').textContent = `${pDone} / ${PROJECTS.length}`;
+      document.getElementById('stat-certs').textContent = `${cDone} / ${CERTS.length}`;
+      document.getElementById('stat-fundamentals').textContent = `${fDone} / 19`;
 
-        const xpPerLevel = 600;
-        const level = Math.min(20, Math.floor(totalXP / xpPerLevel) + 1);
-        const rankTitle = RANK_TITLES[level - 1];
-        const xpIntoLevel = level === 20 ? xpPerLevel : totalXP % xpPerLevel;
-        const levelPct = level === 20 ? 100 : Math.round((xpIntoLevel / xpPerLevel) * 100);
+      const totalHrs = Object.values(state.weeklyHours).reduce((a, b) => a + Number(b || 0), 0);
+      document.getElementById('weekly-total').textContent = `${totalHrs.toFixed(1)} / 9.5 hrs`;
+      document.getElementById('weekly-bar').style.width = `${Math.min(100, (totalHrs / 9.5) * 100)}%`;
 
-        const weeklyTarget = 9.5;
-        const weeklyLogged = WEEKLY_SCHEDULE.reduce((sum, d) => sum + (Number(state.weeklyHours[d.id]) || 0), 0);
-        const weeklyPct = Math.min(100, Math.round((weeklyLogged / weeklyTarget) * 100));
-
-        // Readiness %: Quests 25%, Projects 35%, Core Certs (3) 25%, Fundamentals 15%
-        const qPct = totalQuests ? completedQuests / totalQuests : 0;
-        const pPct = Math.min(1, deployedProjects / 6); // 6 core projects = 100% project readiness
-        const cPct = Math.min(1, passedCoreCerts / 3);  // 3 core certs = 100% cert readiness
-        const fPct = totalFundamentals ? masteredFundamentals / totalFundamentals : 0;
-        const readiness = Math.round((qPct * 25) + (pPct * 35) + (cPct * 25) + (fPct * 15));
-
-        return {
-          totalQuests, completedQuests,
-          deployedProjects,
-          passedCerts, passedCoreCerts,
-          totalFundamentals, masteredFundamentals,
-          totalXP, level, rankTitle, xpIntoLevel, xpPerLevel, levelPct,
-          weeklyLogged, weeklyTarget, weeklyPct,
-          readiness
-        };
-      }
-
-      function getTodayDateString() {
-        const now = new Date();
-        const y = now.getFullYear();
-        const m = String(now.getMonth() + 1).padStart(2, '0');
-        const d = String(now.getDate()).padStart(2, '0');
-        return `${y}-${m}-${d}`;
-      }
-
-      function recordActivityStreak() {
-        const today = getTodayDateString();
-        if (state.lastActiveDate === today) return;
-        if (state.lastActiveDate) {
-          const last = new Date(state.lastActiveDate + 'T00:00:00');
-          const curr = new Date(today + 'T00:00:00');
-          const diffDays = Math.round((curr - last) / (1000 * 60 * 60 * 24));
-          if (diffDays === 1) {
-            state.streak = (state.streak || 0) + 1;
-          } else if (diffDays > 1) {
-            state.streak = 1;
-          }
-        } else {
-          state.streak = 1;
-        }
-        state.lastActiveDate = today;
-      }
-
-      function saveAndRender(skipStreak = false) {
-        if (!skipStreak) recordActivityStreak();
-        try {
-          localStorage.setItem(STORAGE_KEY, JSON.stringify(state));
-        } catch (err) {
-          console.error('localStorage save error:', err);
-        }
-        const m = computeMetrics();
-        if (m.level > previousLevel) {
-          fireConfetti(130);
-          showToast(`LEVEL UP! Level ${m.level} Unlocked`, `New Rank: ${m.rankTitle}`, 'indigo');
-        }
-        previousLevel = m.level;
-        renderAll(m);
-      }
-
-      // ==================== 5. COUNTDOWN TO OCTOBER 1, 2027 ====================
-
-      function updateCountdown() {
-        const target = new Date('2027-10-01T00:00:00').getTime();
-        const now = Date.now();
-        const diff = target - now;
-        const el = document.getElementById('hud-countdown');
-        if (diff <= 0) {
-          el.textContent = 'APPLY NOW!';
-          return;
-        }
-        const days = Math.floor(diff / (1000 * 60 * 60 * 24));
-        const hours = Math.floor((diff / (1000 * 60 * 60)) % 24);
-        const mins = Math.floor((diff / (1000 * 60)) % 60);
-        el.textContent = `${days}d ${hours}h ${mins}m`;
-      }
-      setInterval(updateCountdown, 30000);
-      updateCountdown();
-
-      // ==================== 6. RENDER FUNCTIONS ====================
-
-      function escapeAttr(str) {
-        return String(str || '')
-          .replace(/&/g, '&amp;')
-          .replace(/"/g, '&quot;')
-          .replace(/</g, '&lt;')
-          .replace(/>/g, '&gt;');
-      }
-
-      function renderHUD(m) {
-        document.getElementById('hud-level').textContent = m.level;
-        document.getElementById('hud-rank').textContent = m.rankTitle;
-        document.getElementById('hud-xp-text').textContent = m.level === 20
-          ? `${m.totalXP.toLocaleString()} XP (MAX)`
-          : `${m.xpIntoLevel} / ${m.xpPerLevel} XP`;
-        document.getElementById('hud-xp-pct').textContent = `${m.levelPct}%`;
-        document.getElementById('hud-xp-bar').style.width = `${m.levelPct}%`;
-
-        const streakVal = state.streak || 0;
-        document.getElementById('hud-streak').textContent = `${streakVal}d`;
-        document.getElementById('hud-streak-mobile').textContent = `${streakVal}d`;
-        document.getElementById('hud-readiness').textContent = `${m.readiness}%`;
-      }
-
-      function renderOverview(m) {
-        document.getElementById('stat-xp').textContent = m.totalXP.toLocaleString();
-        document.getElementById('stat-xp-sub').textContent = `Level ${m.level} / 20 • ${m.rankTitle}`;
-        document.getElementById('stat-certs').innerHTML = `${m.passedCerts}<span class="text-lg text-slate-500">/5</span>`;
-        document.getElementById('stat-core-certs').textContent = `${m.passedCoreCerts}/3 Core Priority`;
-        document.getElementById('stat-projects').innerHTML = `${m.deployedProjects}<span class="text-lg text-slate-500">/7</span>`;
-        document.getElementById('stat-fundamentals').innerHTML = `${m.masteredFundamentals}<span class="text-lg text-slate-500">/${m.totalFundamentals}</span>`;
-        document.getElementById('stat-hours').innerHTML = `${m.weeklyLogged.toFixed(1)}<span class="text-base text-slate-500">/${m.weeklyTarget}h</span>`;
-        document.getElementById('stat-hours-sub').textContent = `${m.weeklyPct}% of weekly goal`;
-
-        document.getElementById('weeks-completed-count').textContent = state.weeksCompleted || 0;
-        document.getElementById('weekly-bar-label').textContent = `${m.weeklyLogged.toFixed(2).replace(/\.00$/, '.0')} / ${m.weeklyTarget} hrs (${m.weeklyPct}%)`;
-        document.getElementById('weekly-bar-fill').style.width = `${m.weeklyPct}%`;
-
-        const list = document.getElementById('weekly-schedule-list');
-        list.innerHTML = WEEKLY_SCHEDULE.map(d => {
-          const logged = Number(state.weeklyHours[d.id]) || 0;
-          const hitTarget = d.target > 0 ? logged >= d.target : true;
-          const badgeColor = d.type === 'deep'
-            ? 'bg-indigo-500/15 text-indigo-300 border-indigo-500/35'
-            : d.type === 'cert'
-              ? 'bg-amber-500/15 text-amber-300 border-amber-500/35'
-              : d.type === 'buffer'
-                ? 'bg-slate-800 text-slate-400 border-slate-700'
-                : 'bg-cyan-500/15 text-cyan-300 border-cyan-500/35';
-
-          return `
-            <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2.5 p-3 rounded-xl bg-slate-950/60 border ${hitTarget && d.target > 0 ? 'border-emerald-500/40' : 'border-slate-800/90'} transition">
-              <div class="flex items-start sm:items-center gap-3 min-w-0">
-                <span class="px-2.5 py-1 rounded-lg text-xs font-mono font-bold border shrink-0 w-24 text-center ${badgeColor}">${d.day}</span>
-                <div class="min-w-0">
-                  <div class="text-xs sm:text-sm text-slate-200 font-medium">${d.label}</div>
-                  <div class="text-[11px] font-mono text-slate-500 mt-0.5">Target: ${d.target.toFixed(1)} hrs</div>
-                </div>
-              </div>
-              <div class="flex items-center justify-end gap-2 shrink-0">
-                <button data-day="${d.id}" data-delta="-0.25" class="hour-step-btn w-8 h-8 rounded-lg bg-slate-800 hover:bg-slate-700 text-slate-300 font-mono text-sm font-bold border border-slate-700 transition cursor-pointer">-</button>
-                <span class="w-16 text-center font-mono text-sm font-bold ${hitTarget && d.target > 0 ? 'text-emerald-400' : 'text-white'}">${logged.toFixed(2).replace(/\.00$/, '.0')}h</span>
-                <button data-day="${d.id}" data-delta="0.25" class="hour-step-btn w-8 h-8 rounded-lg bg-slate-800 hover:bg-indigo-500/20 hover:text-indigo-300 hover:border-indigo-500/40 text-slate-200 font-mono text-sm font-bold border border-slate-700 transition cursor-pointer">+</button>
-              </div>
+      const grid = document.getElementById('weekly-days-grid');
+      grid.innerHTML = DAYS.map(d => {
+        const val = Number(state.weeklyHours[d.key] || 0);
+        const hit = d.target > 0 && val >= d.target;
+        return `
+          <div class="p-2.5 rounded-xl bg-slate-900/90 border ${hit ? 'border-emerald-500/50' : 'border-slate-800'} text-center">
+            <div class="text-xs font-bold ${hit ? 'text-emerald-400' : 'text-slate-300'}">${d.key}</div>
+            <div class="text-[10px] text-slate-500 mb-2">${d.target === 0 ? 'Buffer/Off' : `Goal ${d.target}h`}</div>
+            <div class="text-base font-mono font-bold text-white mb-2">${val.toFixed(1)}h</div>
+            <div class="flex items-center justify-center gap-1">
+              <button onclick="adjustDayHours('${d.key}', -0.5)" class="w-6 h-6 rounded bg-slate-800 hover:bg-slate-700 text-slate-300 text-xs font-bold">-</button>
+              <button onclick="adjustDayHours('${d.key}', 0.5)" class="w-6 h-6 rounded bg-blue-600/80 hover:bg-blue-500 text-white text-xs font-bold">+</button>
             </div>
-          `;
-        }).join('');
-
-        const sessions = state.focusSessions || 0;
-        document.getElementById('timer-sessions-count').textContent = `${sessions} (+${sessions * 25} XP)`;
-
-        const breakdown = [
-          { label: 'Weekly Quests', val: m.completedQuests, max: m.totalQuests, weight: '25% weight', bar: 'from-cyan-400 to-sky-400' },
-          { label: 'Enterprise Projects (6 Core)', val: Math.min(6, m.deployedProjects), max: 6, weight: '35% weight', bar: 'from-emerald-400 to-teal-400' },
-          { label: 'Core Priority Certs', val: m.passedCoreCerts, max: 3, weight: '25% weight', bar: 'from-amber-400 to-orange-400' },
-          { label: 'Fundamentals Shield', val: m.masteredFundamentals, max: m.totalFundamentals, weight: '15% weight', bar: 'from-indigo-400 to-violet-400' }
-        ];
-        document.getElementById('readiness-breakdown').innerHTML = breakdown.map(b => {
-          const pct = b.max ? Math.round((b.val / b.max) * 100) : 0;
-          return `
-            <div class="p-3.5 rounded-xl bg-slate-950/65 border border-slate-800">
-              <div class="flex items-center justify-between text-xs mb-1">
-                <span class="font-semibold text-slate-200">${b.label}</span>
-                <span class="font-mono text-slate-400">${b.val}/${b.max}</span>
-              </div>
-              <div class="h-2 w-full rounded-full bg-slate-800 overflow-hidden my-2">
-                <div class="h-full rounded-full bg-gradient-to-r ${b.bar} transition-all duration-300" style="width: ${pct}%"></div>
-              </div>
-              <div class="flex items-center justify-between text-[10px] font-mono text-slate-500">
-                <span>${b.weight}</span>
-                <span class="text-slate-300 font-semibold">${pct}%</span>
-              </div>
-            </div>
-          `;
-        }).join('');
-      }
-
-      function renderQuests() {
-        // Phase 2 Job Applications Pipeline
-        const apps = state.jobApplications || [];
-        const counts = { Applied: 0, Screening: 0, 'System Design': 0, Offer: 0 };
-        apps.forEach(a => { if (counts[a.status] !== undefined) counts[a.status]++; });
-
-        document.getElementById('job-pipeline-summary').innerHTML = `
-          <span class="px-2 py-0.5 rounded-md bg-slate-800 text-slate-300 border border-slate-700">Total: ${apps.length}</span>
-          <span class="px-2 py-0.5 rounded-md bg-cyan-500/15 text-cyan-300 border border-cyan-500/30">Screening: ${counts.Screening}</span>
-          <span class="px-2 py-0.5 rounded-md bg-amber-500/15 text-amber-300 border border-amber-500/30">SysDesign: ${counts['System Design']}</span>
-          <span class="px-2 py-0.5 rounded-md bg-emerald-500/15 text-emerald-300 border border-emerald-500/30">Offers: ${counts.Offer}</span>
+          </div>
         `;
+      }).join('');
+    }
 
-        const appList = document.getElementById('job-applications-list');
-        if (apps.length === 0) {
-          appList.innerHTML = `<div class="text-xs text-slate-500 text-center py-4 border border-dashed border-slate-800 rounded-xl">No applications logged yet. Add target companies when you launch Phase 2 in October 2027.</div>`;
-        } else {
-          appList.innerHTML = apps.map(a => {
-            const statusColor = a.status === 'Offer'
-              ? 'border-emerald-500/50 text-emerald-300 bg-emerald-500/10'
-              : a.status === 'System Design'
-                ? 'border-amber-500/50 text-amber-300 bg-amber-500/10'
-                : a.status === 'Screening'
-                  ? 'border-cyan-500/50 text-cyan-300 bg-cyan-500/10'
-                  : 'border-slate-700 text-slate-300 bg-slate-800';
-            return `
-              <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-2 p-3 rounded-xl bg-slate-950/65 border border-slate-800">
-                <div class="min-w-0">
-                  <div class="text-xs sm:text-sm font-bold text-white truncate">${escapeAttr(a.company)}</div>
-                  <div class="text-[11px] text-slate-400 truncate">${escapeAttr(a.role)} • <span class="font-mono text-slate-500">${a.date}</span></div>
-                </div>
-                <div class="flex items-center gap-2 shrink-0">
-                  <select data-app-id="${a.id}" class="job-status-select px-2.5 py-1 rounded-lg text-xs font-mono font-semibold border focus:outline-none cursor-pointer ${statusColor}">
-                    ${['Applied', 'Screening', 'System Design', 'Offer'].map(st => `<option value="${st}" class="bg-slate-900 text-slate-200" ${a.status === st ? 'selected' : ''}>${st}</option>`).join('')}
-                  </select>
-                  <button data-app-delete="${a.id}" class="job-delete-btn p-1.5 rounded-lg bg-slate-800 hover:bg-rose-500/20 hover:text-rose-400 text-slate-400 transition cursor-pointer" title="Remove">
-                    <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
-                  </button>
+    function renderQuests() {
+      const container = document.getElementById('quests-container');
+      const filtered = QUESTS.filter(q => questFilter === 'all' || q.phase === questFilter);
+      container.innerHTML = filtered.map(q => {
+        const done = !!state.completedQuests[q.id];
+        const subDone = q.subtopics.filter((_, i) => state.completedSubtopics[`${q.id}_${i}`]).length;
+        const pct = Math.round((subDone / q.subtopics.length) * 100);
+        return `
+          <div onclick="openDrawer('${q.id}')" class="glass rounded-2xl p-4 cursor-pointer hover:border-blue-500/50 transition group relative">
+            <div class="flex items-start justify-between gap-3">
+              <div class="flex items-start gap-3">
+                <input type="checkbox" ${done ? 'checked' : ''}
+                  onclick="event.stopPropagation(); toggleQuest('${q.id}')"
+                  class="mt-1 w-4 h-4 rounded accent-blue-500 cursor-pointer" />
+                <div>
+                  <div class="flex items-center gap-2 mb-1">
+                    <span class="text-[11px] font-bold px-2 py-0.5 rounded bg-slate-800 text-blue-300">${q.month}</span>
+                    <span class="text-[11px] text-slate-400">${q.phase === 'phase1' ? 'Phase 1' : 'Phase 2'}</span>
+                  </div>
+                  <h3 class="text-sm sm:text-base font-bold ${done ? 'line-through text-slate-500' : 'text-white'} group-hover:text-blue-300 transition">${q.title}</h3>
+                  <p class="text-xs text-slate-400 mt-1 leading-relaxed">${q.summary}</p>
                 </div>
               </div>
-            `;
-          }).join('');
-        }
-
-        // Filtered Quest Modules
-        const filtered = QUEST_MODULES.filter(m => {
-          if (questModuleFilter !== 'all' && m.id !== questModuleFilter) return false;
-          if (questFilter !== 'all' && m.phase !== questFilter) return false;
-          return true;
-        });
-
-        const container = document.getElementById('quest-modules-container');
-        container.innerHTML = filtered.map(m => {
-          const doneCount = m.quests.filter(q => state.quests[q.id]).length;
-          const pct = Math.round((doneCount / m.quests.length) * 100);
-          const isOpen = !!expandedModules[m.id];
-          const phaseBadge = m.phase === 'phase1'
-            ? '<span class="px-2 py-0.5 rounded-md text-[10px] font-mono font-semibold bg-indigo-500/15 text-indigo-300 border border-indigo-500/35">PHASE 1: BUILD</span>'
-            : '<span class="px-2 py-0.5 rounded-md text-[10px] font-mono font-semibold bg-emerald-500/15 text-emerald-300 border border-emerald-500/35">PHASE 2: APPLY</span>';
-
-          return `
-            <div class="glass-card rounded-2xl overflow-hidden transition">
-              <button data-module-toggle="${m.id}" class="module-toggle-btn w-full p-4 sm:p-5 flex flex-col sm:flex-row sm:items-center justify-between gap-3 text-left hover:bg-slate-800/30 transition cursor-pointer">
-                <div class="space-y-1">
-                  <div class="flex items-center gap-2 flex-wrap">
-                    ${phaseBadge}
-                    <span class="text-xs font-mono font-bold text-slate-300">${m.timeframe}</span>
-                    <span class="text-slate-600">•</span>
-                    <span class="text-xs font-mono text-amber-400">${m.cert}</span>
-                  </div>
-                  <h3 class="text-base sm:text-lg font-bold text-white">${m.title}</h3>
-                  <p class="text-xs text-slate-400">${m.project}</p>
-                </div>
-                <div class="flex items-center gap-4 shrink-0">
-                  <div class="text-right">
-                    <div class="text-xs font-mono font-bold ${pct === 100 ? 'text-emerald-400' : 'text-slate-200'}">${doneCount}/${m.quests.length} Quests</div>
-                    <div class="w-28 h-2 rounded-full bg-slate-800 overflow-hidden mt-1">
-                      <div class="h-full rounded-full ${pct === 100 ? 'bg-emerald-400' : 'bg-indigo-400'} transition-all duration-300" style="width: ${pct}%"></div>
-                    </div>
-                  </div>
-                  <i data-lucide="${isOpen ? 'chevron-up' : 'chevron-down'}" class="w-5 h-5 text-slate-400"></i>
-                </div>
-              </button>
-
-              <div class="${isOpen ? 'block' : 'hidden'} border-t border-slate-800/80 p-4 sm:p-5 space-y-2.5 bg-slate-950/35">
-                ${m.quests.map(q => {
-                  const checked = !!state.quests[q.id];
-                  return `
-                    <label class="flex items-start gap-3.5 p-3.5 rounded-xl border ${checked ? 'bg-emerald-500/5 border-emerald-500/30' : 'bg-slate-900/60 border-slate-800/90 hover:border-slate-700'} transition cursor-pointer">
-                      <input type="checkbox" data-quest-id="${q.id}" class="custom-check quest-checkbox mt-0.5" ${checked ? 'checked' : ''} />
-                      <div class="flex-1 min-w-0">
-                        <div class="flex items-center justify-between gap-2 flex-wrap">
-                          <span class="text-[11px] font-mono font-bold uppercase tracking-wider ${checked ? 'text-emerald-400' : 'text-cyan-400'}">${q.week}</span>
-                          <span class="text-[10px] font-mono px-2 py-0.5 rounded-full ${checked ? 'bg-emerald-500/20 text-emerald-300' : 'bg-slate-800 text-slate-400'}">+100 XP</span>
-                        </div>
-                        <p class="text-xs sm:text-sm mt-1 leading-relaxed ${checked ? 'line-through text-slate-500' : 'text-slate-200'}">${q.text}</p>
-                      </div>
-                    </label>
-                  `;
-                }).join('')}
-              </div>
+              <span class="text-[11px] font-semibold text-emerald-400 whitespace-nowrap">+100 XP</span>
             </div>
-          `;
-        }).join('');
-      }
 
-      function renderProjects(m) {
-        document.getElementById('projects-header-count').textContent = `${m.deployedProjects} / ${PROJECTS.length}`;
-        const grid = document.getElementById('projects-grid');
+            <div class="mt-3 pt-3 border-t border-slate-800/80 flex items-center justify-between gap-3">
+              <div class="flex items-center gap-2 flex-1">
+                <div class="w-24 h-1.5 bg-slate-800 rounded-full overflow-hidden">
+                  <div class="h-full bg-blue-500 transition-all" style="width:${pct}%"></div>
+                </div>
+                <span class="text-[11px] text-slate-400 font-mono">${subDone}/${q.subtopics.length} topics</span>
+              </div>
+              <span class="text-xs font-semibold text-blue-400 group-hover:translate-x-0.5 transition">Deep Dive &amp; Resources →</span>
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
 
-        grid.innerHTML = PROJECTS.map(p => {
-          const ps = state.projects[p.id];
-          const gatesDone = PROJECT_GATES.filter(g => ps.gates[g.key]).length;
-          const deployed = gatesDone === PROJECT_GATES.length;
-
-          return `
-            <div class="glass-card glass-card-hover rounded-2xl p-5 flex flex-col justify-between gap-4 transition ${deployed ? 'border-emerald-500/50 glow-emerald' : ''}">
+    function renderProjects() {
+      const container = document.getElementById('projects-container');
+      container.innerHTML = PROJECTS.map(p => {
+        const ps = state.projects[p.id] || { gates: {}, repo: '', demo: '', benchmark: '' };
+        const gatesPassed = PROJECT_GATES.filter(g => ps.gates[g.key]).length;
+        const deployed = gatesPassed === 4;
+        return `
+          <div class="glass rounded-2xl p-5 border ${deployed ? 'border-emerald-500/50' : 'border-slate-800'} space-y-4">
+            <div class="flex items-start justify-between gap-3">
               <div>
-                <div class="flex items-start justify-between gap-3 mb-2">
-                  <div class="flex items-center gap-2 flex-wrap">
-                    <span class="px-2.5 py-0.5 rounded-lg text-xs font-mono font-bold bg-indigo-500/15 text-indigo-300 border border-indigo-500/35">#${p.num}</span>
-                    <span class="text-xs font-mono text-slate-400">${p.month}</span>
-                    <span class="px-2 py-0.5 rounded-md text-[10px] font-mono font-semibold bg-cyan-500/10 text-cyan-300 border border-cyan-500/25">${p.domain}</span>
-                  </div>
-                  ${deployed
-                    ? '<span class="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-[11px] font-mono font-bold bg-emerald-500/20 text-emerald-300 border border-emerald-500/40 shrink-0"><i data-lucide="check-circle-2" class="w-3.5 h-3.5"></i> DEPLOYED +500 XP</span>'
-                    : `<span class="px-2.5 py-1 rounded-full text-[11px] font-mono font-semibold bg-slate-800 text-slate-400 border border-slate-700 shrink-0">${gatesDone}/5 Gates</span>`
-                  }
+                <div class="flex items-center gap-2 mb-1">
+                  <span class="text-xs font-bold px-2 py-0.5 rounded bg-violet-500/20 text-violet-300">Project #${p.num}</span>
+                  <span class="text-xs text-slate-400">${p.month}</span>
+                  ${deployed ? '<span class="text-xs font-bold px-2 py-0.5 rounded bg-emerald-500/20 text-emerald-300">DEPLOYED +500 XP</span>' : ''}
                 </div>
-
-                <h3 class="text-lg font-bold text-white">${p.name}</h3>
-                <p class="text-[11px] font-mono text-indigo-300 mt-1">${p.stack}</p>
-                <p class="text-xs text-slate-400 mt-2 leading-relaxed">${p.desc}</p>
-
-                <!-- 5 Quality Gates -->
-                <div class="mt-4 space-y-1.5">
-                  <div class="text-[10px] font-mono uppercase tracking-wider text-slate-500">5 Non-Negotiable 3-YOE Quality Gates</div>
-                  ${PROJECT_GATES.map(g => {
-                    const checked = !!ps.gates[g.key];
-                    return `
-                      <label class="flex items-center gap-2.5 p-2 rounded-xl bg-slate-950/60 border ${checked ? 'border-emerald-500/35' : 'border-slate-800'} cursor-pointer hover:border-slate-700 transition">
-                        <input type="checkbox" data-proj-id="${p.id}" data-gate="${g.key}" class="custom-check project-gate-cb" ${checked ? 'checked' : ''} />
-                        <span class="text-xs ${checked ? 'text-emerald-300 font-medium' : 'text-slate-300'}">${g.label}</span>
-                      </label>
-                    `;
-                  }).join('')}
-                </div>
+                <h3 class="text-base font-bold text-white">${p.title}</h3>
+                <div class="text-xs text-blue-300 mt-0.5">Enterprise Anchor: ${p.domain}</div>
+                <div class="text-[11px] text-slate-400 mt-1 font-mono">${p.stack}</div>
               </div>
-
-              <!-- Measured Impact & Benchmarks -->
-              <div class="pt-3 border-t border-slate-800/80 space-y-3">
-                <div class="text-[10px] font-mono uppercase tracking-wider text-emerald-400 flex items-center gap-1.5">
-                  <i data-lucide="gauge" class="w-3.5 h-3.5"></i>
-                  Measured Impact & Benchmarks (Log in README)
-                </div>
-                <div class="grid grid-cols-1 sm:grid-cols-3 gap-2">
-                  <div>
-                    <label class="block text-[10px] font-mono text-slate-500 mb-1">Latency Metric</label>
-                    <input type="text" data-proj-id="${p.id}" data-field="latencyMetric" value="${escapeAttr(ps.latencyMetric)}" placeholder="e.g. -45% via cache" class="project-meta-input w-full px-2.5 py-1.5 rounded-lg bg-slate-950/85 border border-slate-800 focus:border-cyan-400 focus:outline-none text-xs text-slate-200 font-mono" />
-                  </div>
-                  <div>
-                    <label class="block text-[10px] font-mono text-slate-500 mb-1">Cost / FinOps</label>
-                    <input type="text" data-proj-id="${p.id}" data-field="costMetric" value="${escapeAttr(ps.costMetric)}" placeholder="e.g. $0.40 / 1k req" class="project-meta-input w-full px-2.5 py-1.5 rounded-lg bg-slate-950/85 border border-slate-800 focus:border-amber-400 focus:outline-none text-xs text-slate-200 font-mono" />
-                  </div>
-                  <div>
-                    <label class="block text-[10px] font-mono text-slate-500 mb-1">Accuracy / Eval</label>
-                    <input type="text" data-proj-id="${p.id}" data-field="accuracyMetric" value="${escapeAttr(ps.accuracyMetric)}" placeholder="e.g. RAGAS 0.92" class="project-meta-input w-full px-2.5 py-1.5 rounded-lg bg-slate-950/85 border border-slate-800 focus:border-emerald-400 focus:outline-none text-xs text-slate-200 font-mono" />
-                  </div>
-                </div>
-
-                <!-- Repo & Live Demo URLs -->
-                <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
-                  <div>
-                    <label class="block text-[10px] font-mono text-slate-500 mb-1">GitHub Repo URL</label>
-                    <div class="flex items-center gap-1.5">
-                      <input type="url" data-proj-id="${p.id}" data-field="repoUrl" value="${escapeAttr(ps.repoUrl)}" placeholder="https://github.com/..." class="project-meta-input w-full px-2.5 py-1.5 rounded-lg bg-slate-950/85 border border-slate-800 focus:border-indigo-400 focus:outline-none text-xs text-slate-200 font-mono" />
-                      ${ps.repoUrl ? `<a href="${escapeAttr(ps.repoUrl)}" target="_blank" rel="noopener noreferrer" class="p-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-indigo-400 shrink-0" title="Open Repo"><i data-lucide="external-link" class="w-3.5 h-3.5"></i></a>` : ''}
-                    </div>
-                  </div>
-                  <div>
-                    <label class="block text-[10px] font-mono text-slate-500 mb-1">Live Demo URL</label>
-                    <div class="flex items-center gap-1.5">
-                      <input type="url" data-proj-id="${p.id}" data-field="demoUrl" value="${escapeAttr(ps.demoUrl)}" placeholder="https://..." class="project-meta-input w-full px-2.5 py-1.5 rounded-lg bg-slate-950/85 border border-slate-800 focus:border-emerald-400 focus:outline-none text-xs text-slate-200 font-mono" />
-                      ${ps.demoUrl ? `<a href="${escapeAttr(ps.demoUrl)}" target="_blank" rel="noopener noreferrer" class="p-1.5 rounded-lg bg-slate-800 hover:bg-slate-700 text-emerald-400 shrink-0" title="Open Live Demo"><i data-lucide="external-link" class="w-3.5 h-3.5"></i></a>` : ''}
-                    </div>
-                  </div>
-                </div>
+              <div class="text-right">
+                <div class="text-xs font-mono font-bold ${deployed ? 'text-emerald-400' : 'text-slate-400'}">${gatesPassed}/4 Gates</div>
               </div>
             </div>
-          `;
-        }).join('');
-      }
 
-      function renderCerts(m) {
-        document.getElementById('certs-header-count').textContent = `${m.passedCerts} / ${CERTIFICATIONS.length} (${m.passedCoreCerts}/3 Core)`;
-        const grid = document.getElementById('certs-grid');
+            <!-- 4 Quality Gates -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+              ${PROJECT_GATES.map(g => `
+                <label class="flex items-center gap-2 p-2 rounded-lg bg-slate-900/80 border border-slate-800 cursor-pointer hover:border-slate-700 text-xs">
+                  <input type="checkbox" ${ps.gates[g.key] ? 'checked' : ''}
+                    onchange="toggleProjectGate('${p.id}', '${g.key}')"
+                    class="w-3.5 h-3.5 rounded accent-emerald-500" />
+                  <span class="${ps.gates[g.key] ? 'text-emerald-300' : 'text-slate-300'}">${g.label}</span>
+                </label>
+              `).join('')}
+            </div>
 
-        grid.innerHTML = CERTIFICATIONS.map(c => {
-          const cs = state.certs[c.id];
-          const isPassed = cs.status === 'passed';
-          const isStudying = cs.status === 'studying';
-          const isCore = c.priority === 'core';
-
-          const cardAccent = isPassed
-            ? 'border-amber-400/60 shadow-[0_0_28px_-6px_rgba(245,158,11,0.35)]'
-            : isStudying
-              ? 'border-cyan-500/45'
-              : 'border-slate-800/90';
-
-          const badgeBg = isPassed
-            ? 'bg-gradient-to-br from-amber-400 to-orange-500 text-slate-950'
-            : isStudying
-              ? 'bg-cyan-500/20 text-cyan-300 border border-cyan-500/40'
-              : 'bg-slate-800/90 text-slate-500 border border-slate-700';
-
-          const priorityBadge = isCore
-            ? '<span class="px-2 py-0.5 rounded-md text-[10px] font-mono font-bold bg-amber-500/15 text-amber-300 border border-amber-500/40">CORE PRIORITY</span>'
-            : '<span class="px-2 py-0.5 rounded-md text-[10px] font-mono font-semibold bg-slate-800 text-slate-400 border border-slate-700">BONUS / STRETCH</span>';
-
-          return `
-            <div class="glass-card rounded-2xl p-5 flex flex-col justify-between gap-4 transition ${cardAccent}">
-              <div>
-                <div class="flex items-center justify-between gap-2 mb-3">
-                  ${priorityBadge}
-                  <span class="text-xs font-mono text-cyan-400">Target: ${c.target}</span>
-                </div>
-
-                <div class="flex items-start gap-3.5 mb-3">
-                  <div class="w-14 h-14 rounded-2xl flex flex-col items-center justify-center font-mono font-extrabold text-xs shrink-0 ${badgeBg}">
-                    <i data-lucide="${isPassed ? 'trophy' : isStudying ? 'book-open' : 'lock'}" class="w-5 h-5 mb-0.5"></i>
-                    <span>${c.code}</span>
-                  </div>
-                  <div>
-                    <span class="text-[10px] font-mono uppercase tracking-wider text-slate-400 block">${c.provider}</span>
-                    <h3 class="text-base font-bold text-white leading-snug">${c.name}</h3>
-                    <span class="block text-[10px] font-mono mt-1 ${isPassed ? 'text-amber-400 font-bold' : 'text-slate-500'}">${isPassed ? 'UNLOCKED +1,000 XP' : '+1,000 XP'}</span>
-                  </div>
-                </div>
-
-                <p class="text-xs text-slate-400 leading-relaxed">${c.desc}</p>
-              </div>
-
-              <div class="space-y-3 pt-3 border-t border-slate-800/80">
-                <div class="grid grid-cols-3 gap-1.5 p-1 rounded-xl bg-slate-950/80 border border-slate-800">
-                  ${['locked', 'studying', 'passed'].map(st => {
-                    const active = cs.status === st;
-                    const activeCls = st === 'passed'
-                      ? 'bg-amber-500 text-slate-950 font-bold'
-                      : st === 'studying'
-                        ? 'bg-cyan-500/25 text-cyan-300 font-semibold border border-cyan-500/40'
-                        : 'bg-slate-800 text-slate-200 font-semibold';
-                    return `<button data-cert-id="${c.id}" data-status="${st}" class="cert-status-btn py-1.5 rounded-lg text-[11px] capitalize transition cursor-pointer ${active ? activeCls : 'text-slate-500 hover:text-slate-300'}">${st}</button>`;
-                  }).join('')}
-                </div>
-
-                <div class="grid grid-cols-2 gap-2.5">
-                  <div>
-                    <label class="block text-[10px] font-mono uppercase text-slate-500 mb-1">Practice Score (%)</label>
-                    <input type="text" data-cert-id="${c.id}" data-field="score" value="${escapeAttr(cs.score)}" placeholder="e.g. 88%" class="cert-meta-input w-full px-2.5 py-1.5 rounded-lg bg-slate-950/85 border border-slate-800 focus:border-cyan-400 focus:outline-none text-xs text-slate-200 font-mono" />
-                  </div>
-                  <div>
-                    <label class="block text-[10px] font-mono uppercase text-slate-500 mb-1">Passed Date</label>
-                    <input type="date" data-cert-id="${c.id}" data-field="date" value="${escapeAttr(cs.date)}" class="cert-meta-input w-full px-2.5 py-1.5 rounded-lg bg-slate-950/85 border border-slate-800 focus:border-amber-400 focus:outline-none text-xs text-slate-200 font-mono" />
-                  </div>
-                </div>
+            <!-- Benchmarks & URLs -->
+            <div class="space-y-2 pt-2 border-t border-slate-800/80">
+              <input value="${escapeAttr(ps.benchmark || '')}" onchange="updateProjectField('${p.id}', 'benchmark', this.value)"
+                placeholder="Measured Impact: ${p.benchmarkPlaceholder}"
+                class="w-full px-3 py-1.5 rounded-lg bg-slate-900 border border-slate-800 text-xs text-amber-200 placeholder-slate-500 focus:outline-none focus:border-amber-500" />
+              <div class="grid grid-cols-1 sm:grid-cols-2 gap-2">
+                <input value="${escapeAttr(ps.repo || '')}" onchange="updateProjectField('${p.id}', 'repo', this.value)"
+                  placeholder="GitHub Repo URL"
+                  class="px-3 py-1.5 rounded-lg bg-slate-900 border border-slate-800 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-blue-500" />
+                <input value="${escapeAttr(ps.demo || '')}" onchange="updateProjectField('${p.id}', 'demo', this.value)"
+                  placeholder="Live Demo / Azure URL"
+                  class="px-3 py-1.5 rounded-lg bg-slate-900 border border-slate-800 text-xs text-slate-200 placeholder-slate-500 focus:outline-none focus:border-blue-500" />
               </div>
             </div>
-          `;
-        }).join('');
-      }
+          </div>
+        `;
+      }).join('');
+    }
 
-      function renderFundamentals(m) {
-        const pct = m.totalFundamentals ? Math.round((m.masteredFundamentals / m.totalFundamentals) * 100) : 0;
-        document.getElementById('shield-integrity-pct').textContent = `${pct}% (${m.masteredFundamentals}/${m.totalFundamentals})`;
-        document.getElementById('shield-integrity-bar').style.width = `${pct}%`;
-
-        const colorMap = {
-          cyan: 'text-cyan-400 bg-cyan-500/15 border-cyan-500/30',
-          indigo: 'text-indigo-400 bg-indigo-500/15 border-indigo-500/30',
-          emerald: 'text-emerald-400 bg-emerald-500/15 border-emerald-500/30',
-          sky: 'text-sky-400 bg-sky-500/15 border-sky-500/30',
-          amber: 'text-amber-400 bg-amber-500/15 border-amber-500/30'
-        };
-
-        const grid = document.getElementById('fundamentals-grid');
-        grid.innerHTML = FUNDAMENTALS_BUCKETS.map(b => {
-          const done = b.items.filter(it => state.fundamentals[it.id]).length;
-          const bpct = Math.round((done / b.items.length) * 100);
-          return `
-            <div class="glass-card rounded-2xl p-5 flex flex-col gap-4">
-              <div class="flex items-center justify-between gap-3">
-                <div class="flex items-center gap-3">
-                  <div class="p-2.5 rounded-xl border ${colorMap[b.color]}">
-                    <i data-lucide="${b.icon}" class="w-5 h-5"></i>
-                  </div>
-                  <div>
-                    <h3 class="text-base font-bold text-white">${b.title}</h3>
-                    <span class="text-[11px] font-mono text-slate-400">${done} / ${b.items.length} Mastered</span>
-                  </div>
-                </div>
-                <span class="text-xs font-mono font-bold ${bpct === 100 ? 'text-emerald-400' : 'text-slate-300'}">${bpct}%</span>
+    function renderCerts() {
+      const container = document.getElementById('certs-container');
+      container.innerHTML = CERTS.map(c => {
+        const cs = state.certs[c.id] || { status: 'Locked', score: '', date: '' };
+        const isPassed = cs.status === 'Passed';
+        const isStudying = cs.status === 'Studying';
+        const badgeClass = c.priority === 'Core'
+          ? 'bg-blue-500/20 text-blue-300 border-blue-500/30'
+          : 'bg-slate-700/50 text-slate-300 border-slate-600/50';
+        return `
+          <div class="glass rounded-2xl p-5 border ${isPassed ? 'border-emerald-500/60' : 'border-slate-800'} flex flex-col justify-between gap-4">
+            <div>
+              <div class="flex items-center justify-between gap-2 mb-2">
+                <span class="text-[11px] font-bold px-2 py-0.5 rounded border ${badgeClass}">${c.priority} Priority</span>
+                <span class="text-xs text-slate-400">Target: ${c.target}</span>
               </div>
-
-              <div class="h-1.5 w-full rounded-full bg-slate-800 overflow-hidden">
-                <div class="h-full rounded-full ${bpct === 100 ? 'bg-emerald-400' : 'bg-indigo-400'} transition-all duration-300" style="width: ${bpct}%"></div>
-              </div>
-
-              <div class="space-y-2">
-                ${b.items.map(it => {
-                  const checked = !!state.fundamentals[it.id];
-                  return `
-                    <label class="flex items-start gap-3 p-3 rounded-xl border ${checked ? 'bg-emerald-500/5 border-emerald-500/30' : 'bg-slate-950/60 border-slate-800/90 hover:border-slate-700'} transition cursor-pointer">
-                      <input type="checkbox" data-fund-id="${it.id}" class="custom-check fund-checkbox mt-0.5" ${checked ? 'checked' : ''} />
-                      <div class="flex-1 min-w-0">
-                        <span class="text-xs sm:text-sm leading-relaxed ${checked ? 'text-slate-400 line-through' : 'text-slate-200'}">${it.text}</span>
-                        <span class="inline-block ml-2 text-[10px] font-mono ${checked ? 'text-emerald-400' : 'text-slate-500'}">+50 XP</span>
-                      </div>
-                    </label>
-                  `;
-                }).join('')}
-              </div>
+              <h3 class="text-base font-bold text-white">${c.code}</h3>
+              <div class="text-xs font-medium text-violet-300 mb-2">${c.name}</div>
+              <p class="text-xs text-slate-400 leading-relaxed">${c.desc}</p>
             </div>
-          `;
-        }).join('');
+
+            <div class="space-y-2.5 pt-3 border-t border-slate-800">
+              <div class="grid grid-cols-3 gap-1.5">
+                ${['Locked', 'Studying', 'Passed'].map(st => `
+                  <button onclick="setCertStatus('${c.id}', '${st}')"
+                    class="py-1.5 rounded-lg text-xs font-semibold transition ${
+                      cs.status === st
+                        ? (st === 'Passed' ? 'bg-emerald-600 text-white' : st === 'Studying' ? 'bg-amber-600 text-white' : 'bg-slate-700 text-white')
+                        : 'bg-slate-900 text-slate-400 hover:bg-slate-800'
+                    }">${st}</button>
+                `).join('')}
+              </div>
+              <div class="grid grid-cols-2 gap-2">
+                <input value="${escapeAttr(cs.score || '')}" onchange="updateCertField('${c.id}', 'score', this.value)"
+                  placeholder="Mock Score (e.g. 84%)"
+                  class="px-2.5 py-1.5 rounded-lg bg-slate-900 border border-slate-800 text-xs text-slate-200 placeholder-slate-500" />
+                <input type="date" value="${escapeAttr(cs.date || '')}" onchange="updateCertField('${c.id}', 'date', this.value)"
+                  class="px-2.5 py-1.5 rounded-lg bg-slate-900 border border-slate-800 text-xs text-slate-300" />
+              </div>
+              ${isPassed ? '<div class="text-center text-xs font-bold text-emerald-400">🏆 Earned +1,000 XP</div>' : isStudying ? '<div class="text-center text-xs text-amber-400">In Progress...</div>' : ''}
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function renderFundamentals() {
+      const container = document.getElementById('fundamentals-container');
+      container.innerHTML = FUNDAMENTALS.map(group => {
+        const doneCount = group.items.filter(i => state.fundamentals[i.id]).length;
+        return `
+          <div class="glass rounded-2xl p-5 space-y-3">
+            <div class="flex items-center justify-between">
+              <h3 class="text-sm font-bold text-white">${group.bucket}</h3>
+              <span class="text-xs font-mono ${doneCount === group.items.length ? 'text-emerald-400' : 'text-slate-400'}">${doneCount}/${group.items.length}</span>
+            </div>
+            <div class="space-y-2">
+              ${group.items.map(item => `
+                <label class="flex items-start gap-2.5 p-2.5 rounded-xl bg-slate-900/75 border border-slate-800/80 cursor-pointer hover:border-slate-700">
+                  <input type="checkbox" ${state.fundamentals[item.id] ? 'checked' : ''}
+                    onchange="toggleFundamental('${item.id}')"
+                    class="mt-0.5 w-4 h-4 rounded accent-amber-500" />
+                  <span class="text-xs leading-relaxed ${state.fundamentals[item.id] ? 'line-through text-slate-500' : 'text-slate-200'}">${item.text}</span>
+                </label>
+              `).join('')}
+            </div>
+          </div>
+        `;
+      }).join('');
+    }
+
+    function renderJobs() {
+      const tbody = document.getElementById('jobs-tbody');
+      if (!state.jobs.length) {
+        tbody.innerHTML = `<tr><td colspan="5" class="px-4 py-8 text-center text-xs text-slate-500">No roles logged yet. Start building your target list for the October 1, 2027 launch!</td></tr>`;
+        return;
       }
+      const statusColors = {
+        'Wishlist': 'bg-slate-700 text-slate-200',
+        'Applied': 'bg-blue-500/20 text-blue-300',
+        'Referral Sent': 'bg-violet-500/20 text-violet-300',
+        'Interviewing': 'bg-amber-500/20 text-amber-300',
+        'Offer': 'bg-emerald-500/20 text-emerald-300',
+        'Rejected': 'bg-rose-500/20 text-rose-300'
+      };
+      tbody.innerHTML = state.jobs.map((j, idx) => `
+        <tr class="hover:bg-slate-900/50">
+          <td class="px-4 py-3 font-semibold text-white">${escapeHtml(j.company)}</td>
+          <td class="px-4 py-3 text-slate-300">${escapeHtml(j.role)}</td>
+          <td class="px-4 py-3">
+            <select onchange="updateJobStatus(${idx}, this.value)" class="px-2 py-1 rounded-lg text-xs font-semibold border border-slate-700 bg-slate-900 ${statusColors[j.status] || ''}">
+              ${Object.keys(statusColors).map(s => `<option value="${s}" ${j.status === s ? 'selected' : ''}>${s}</option>`).join('')}
+            </select>
+          </td>
+          <td class="px-4 py-3 text-xs text-slate-400">${escapeHtml(j.notes || '—')}</td>
+          <td class="px-4 py-3 text-right">
+            <button onclick="deleteJob(${idx})" class="text-xs text-rose-400 hover:text-rose-300">Delete</button>
+          </td>
+        </tr>
+      `).join('');
+    }
 
-      function renderAll(metrics) {
-        const m = metrics || computeMetrics();
-        renderHUD(m);
-        renderOverview(m);
-        renderQuests();
-        renderProjects(m);
-        renderCerts(m);
-        renderFundamentals(m);
-        lucide.createIcons();
-      }
+    function renderDrawer() {
+      if (!activeDrawerQuestId) return;
+      const q = QUESTS.find(x => x.id === activeDrawerQuestId);
+      if (!q) return;
 
-      // ==================== 7. FOCUS TIMER ====================
+      document.getElementById('drawer-month').textContent = q.month;
+      document.getElementById('drawer-phase').textContent = q.phase === 'phase1' ? 'Phase 1: Build & Certify' : 'Phase 2: Apply & Interview';
+      document.getElementById('drawer-title').textContent = q.title;
+      document.getElementById('drawer-milestone').textContent = q.milestone;
+      document.getElementById('drawer-trap').textContent = q.trap;
 
-      function updateTimerUI() {
-        const mins = Math.floor(timerSecondsLeft / 60);
-        const secs = timerSecondsLeft % 60;
-        document.getElementById('timer-display').textContent = `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+      const subDone = q.subtopics.filter((_, i) => state.completedSubtopics[`${q.id}_${i}`]).length;
+      document.getElementById('drawer-sub-progress').textContent = `${subDone} / ${q.subtopics.length}`;
+      document.getElementById('drawer-sub-bar').style.width = `${Math.round((subDone / q.subtopics.length) * 100)}%`;
 
-        const total = timerPresetMinutes * 60;
-        const progress = 1 - (timerSecondsLeft / total);
-        document.getElementById('timer-ring').style.strokeDashoffset = (502.65 * progress).toFixed(2);
+      document.getElementById('drawer-subtopics').innerHTML = q.subtopics.map((st, i) => {
+        const key = `${q.id}_${i}`;
+        const checked = !!state.completedSubtopics[key];
+        return `
+          <label class="flex items-start gap-2.5 p-2.5 rounded-xl bg-slate-900 border border-slate-800 cursor-pointer hover:border-blue-500/40">
+            <input type="checkbox" ${checked ? 'checked' : ''} onchange="toggleSubtopic('${key}')" class="mt-0.5 w-4 h-4 rounded accent-blue-500" />
+            <span class="text-xs leading-relaxed ${checked ? 'line-through text-slate-500' : 'text-slate-200'}">${st}</span>
+          </label>
+        `;
+      }).join('');
 
-        const btn = document.getElementById('btn-timer-toggle');
-        const status = document.getElementById('timer-status');
-        if (timerRunning) {
-          btn.innerHTML = '<i data-lucide="pause" class="w-4 h-4"></i><span>Pause</span>';
-          status.textContent = 'Focusing...';
-          status.className = 'text-[11px] font-mono uppercase tracking-widest text-cyan-400 mt-1 animate-pulse';
-        } else {
-          btn.innerHTML = '<i data-lucide="play" class="w-4 h-4"></i><span>Start</span>';
-          status.textContent = timerSecondsLeft === total ? 'Ready' : 'Paused';
-          status.className = 'text-[11px] font-mono uppercase tracking-widest text-slate-400 mt-1';
-        }
-        lucide.createIcons();
-      }
+      const badgeMap = {
+        YouTube: 'bg-rose-500/20 text-rose-300 border-rose-500/30',
+        GitHub: 'bg-slate-700/60 text-slate-200 border-slate-600',
+        Docs: 'bg-blue-500/20 text-blue-300 border-blue-500/30',
+        Guide: 'bg-emerald-500/20 text-emerald-300 border-emerald-500/30'
+      };
 
-      function completeTimerSession() {
+      document.getElementById('drawer-resources').innerHTML = q.resources.map(r => `
+        <a href="${r.url}" target="_blank" rel="noopener noreferrer"
+          class="block p-3 rounded-xl bg-slate-900/90 border border-slate-800 hover:border-blue-500/60 transition">
+          <div class="flex items-center justify-between gap-2 mb-1">
+            <span class="text-[10px] font-bold px-2 py-0.5 rounded border ${badgeMap[r.type] || badgeMap.Guide}">${r.type}</span>
+            <span class="text-[11px] text-blue-400">Open ↗</span>
+          </div>
+          <div class="text-xs font-bold text-white">${r.title}</div>
+          <div class="text-[11px] text-slate-400 mt-0.5">${r.note}</div>
+        </a>
+      `).join('');
+
+      const done = !!state.completedQuests[q.id];
+      const btn = document.getElementById('drawer-complete-btn');
+      btn.textContent = done ? '✓ Quest Completed (+100 XP)' : 'Mark Quest Complete (+100 XP)';
+      btn.className = done
+        ? 'px-4 py-2 rounded-xl text-xs font-bold bg-emerald-600/20 text-emerald-300 border border-emerald-500/40'
+        : 'px-4 py-2 rounded-xl text-xs font-bold bg-blue-600 hover:bg-blue-500 text-white';
+      btn.onclick = () => toggleQuest(q.id);
+    }
+
+    function renderAll() {
+      renderHUD();
+      renderOverview();
+      renderQuests();
+      renderProjects();
+      renderCerts();
+      renderFundamentals();
+      renderJobs();
+      renderDrawer();
+    }
+
+    // =========================================================================
+    // INTERACTIONS
+    // =========================================================================
+    function switchTab(tab) {
+      currentTab = tab;
+      ['overview', 'quests', 'projects', 'certs', 'fundamentals', 'jobs'].forEach(t => {
+        document.getElementById(`view-${t}`).classList.toggle('hidden', t !== tab);
+        const btn = document.getElementById(`tab-${t}`);
+        btn.classList.toggle('tab-active', t === tab);
+        if (t !== tab) btn.className = 'tab-btn px-3.5 py-1.5 rounded-lg text-xs sm:text-sm font-semibold transition whitespace-nowrap text-slate-300 hover:bg-slate-800/80';
+      });
+    }
+
+    function setQuestFilter(f) {
+      questFilter = f;
+      ['all', 'phase1', 'phase2'].forEach(k => {
+        const el = document.getElementById(`qf-${k}`);
+        el.className = k === f
+          ? 'qf-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-blue-600 text-white'
+          : 'qf-btn px-3 py-1.5 rounded-lg text-xs font-semibold bg-slate-800 text-slate-300 hover:bg-slate-700';
+      });
+      renderQuests();
+    }
+
+    function openDrawer(qId) {
+      activeDrawerQuestId = qId;
+      renderDrawer();
+      document.getElementById('drawer-backdrop').classList.remove('hidden');
+      const d = document.getElementById('quest-drawer');
+      d.classList.remove('drawer-exit');
+      d.classList.add('drawer-enter');
+    }
+
+    function closeDrawer() {
+      activeDrawerQuestId = null;
+      document.getElementById('drawer-backdrop').classList.add('hidden');
+      const d = document.getElementById('quest-drawer');
+      d.classList.remove('drawer-enter');
+      d.classList.add('drawer-exit');
+    }
+
+    function toggleQuest(id) {
+      state.completedQuests[id] = !state.completedQuests[id];
+      saveState();
+    }
+
+    function toggleSubtopic(key) {
+      state.completedSubtopics[key] = !state.completedSubtopics[key];
+      saveState();
+    }
+
+    function toggleProjectGate(pId, gateKey) {
+      const wasDeployed = PROJECT_GATES.every(g => state.projects[pId].gates[g.key]);
+      state.projects[pId].gates[gateKey] = !state.projects[pId].gates[gateKey];
+      const nowDeployed = PROJECT_GATES.every(g => state.projects[pId].gates[g.key]);
+      if (!wasDeployed && nowDeployed) fireConfetti();
+      saveState();
+    }
+
+    function updateProjectField(pId, field, value) {
+      state.projects[pId][field] = value;
+      saveState(false);
+    }
+
+    function setCertStatus(cId, status) {
+      const wasPassed = state.certs[cId].status === 'Passed';
+      state.certs[cId].status = status;
+      if (!wasPassed && status === 'Passed') fireConfetti();
+      saveState();
+    }
+
+    function updateCertField(cId, field, value) {
+      state.certs[cId][field] = value;
+      saveState(false);
+    }
+
+    function toggleFundamental(fId) {
+      state.fundamentals[fId] = !state.fundamentals[fId];
+      saveState();
+    }
+
+    function adjustDayHours(dayKey, delta) {
+      state.weeklyHours[dayKey] = Math.max(0, Math.round(((state.weeklyHours[dayKey] || 0) + delta) * 10) / 10);
+      saveState(false);
+    }
+
+    function resetWeekHours() {
+      DAYS.forEach(d => state.weeklyHours[d.key] = 0);
+      saveState(false);
+    }
+
+    function addJob(e) {
+      e.preventDefault();
+      state.jobs.unshift({
+        company: document.getElementById('job-company').value.trim(),
+        role: document.getElementById('job-role').value.trim(),
+        status: document.getElementById('job-status').value,
+        notes: document.getElementById('job-notes').value.trim()
+      });
+      e.target.reset();
+      saveState();
+    }
+
+    function updateJobStatus(idx, status) {
+      state.jobs[idx].status = status;
+      if (status === 'Offer') fireConfetti();
+      saveState(false);
+    }
+
+    function deleteJob(idx) {
+      state.jobs.splice(idx, 1);
+      saveState(false);
+    }
+
+    // =========================================================================
+    // DEEP FOCUS TIMER
+    // =========================================================================
+    let timerMinutes = 45;
+    let timerSecondsLeft = 45 * 60;
+    let timerInterval = null;
+
+    function updateTimerUI() {
+      const m = String(Math.floor(timerSecondsLeft / 60)).padStart(2, '0');
+      const s = String(timerSecondsLeft % 60).padStart(2, '0');
+      document.getElementById('timer-display').textContent = `${m}:${s}`;
+    }
+
+    function setTimerPreset(mins) {
+      clearInterval(timerInterval);
+      timerInterval = null;
+      timerMinutes = mins;
+      timerSecondsLeft = mins * 60;
+      document.getElementById('timer-start-btn').textContent = 'Start';
+      document.getElementById('timer-status').textContent = `Preset set to ${mins} minutes`;
+      updateTimerUI();
+    }
+
+    function toggleTimer() {
+      const btn = document.getElementById('timer-start-btn');
+      if (timerInterval) {
         clearInterval(timerInterval);
-        timerRunning = false;
-        state.focusSessions = (state.focusSessions || 0) + 1;
-
-        const dayMap = ['sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat'];
-        const todayKey = dayMap[new Date().getDay()];
-        const addedHours = Number((timerPresetMinutes / 60).toFixed(2));
-        state.weeklyHours[todayKey] = Number(((state.weeklyHours[todayKey] || 0) + addedHours).toFixed(2));
-
-        timerSecondsLeft = timerPresetMinutes * 60;
-        updateTimerUI();
-        fireConfetti(60);
-        showToast('Focus Sprint Complete! +25 XP', `Auto-logged +${addedHours}h to today's schedule.`, 'emerald');
-        saveAndRender();
+        timerInterval = null;
+        btn.textContent = 'Resume';
+        document.getElementById('timer-status').textContent = 'Paused';
+        return;
       }
-
-      document.querySelectorAll('.timer-preset').forEach(btn => {
-        btn.addEventListener('click', () => {
-          if (timerRunning) {
-            clearInterval(timerInterval);
-            timerRunning = false;
-          }
-          timerPresetMinutes = Number(btn.dataset.preset);
-          timerSecondsLeft = timerPresetMinutes * 60;
-          document.querySelectorAll('.timer-preset').forEach(b => {
-            b.className = 'timer-preset py-2 rounded-xl text-xs font-mono font-semibold bg-slate-800/80 text-slate-400 border border-slate-700/60 hover:text-white transition cursor-pointer';
-          });
-          btn.className = 'timer-preset active py-2 rounded-xl text-xs font-mono font-semibold bg-indigo-500/20 text-indigo-300 border border-indigo-500/50 transition cursor-pointer';
-          updateTimerUI();
-        });
-      });
-
-      document.getElementById('btn-timer-toggle').addEventListener('click', () => {
-        if (timerRunning) {
+      btn.textContent = 'Pause';
+      document.getElementById('timer-status').textContent = 'Deep focus in progress...';
+      timerInterval = setInterval(() => {
+        timerSecondsLeft--;
+        updateTimerUI();
+        if (timerSecondsLeft <= 0) {
           clearInterval(timerInterval);
-          timerRunning = false;
-        } else {
-          timerRunning = true;
-          timerInterval = setInterval(() => {
-            timerSecondsLeft--;
-            if (timerSecondsLeft <= 0) {
-              completeTimerSession();
-            } else {
-              updateTimerUI();
-            }
-          }, 1000);
+          timerInterval = null;
+          btn.textContent = 'Start';
+          document.getElementById('timer-status').textContent = `Session complete! +25 XP logged`;
+          state.focusSessions = (state.focusSessions || 0) + 1;
+          const dayNames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+          const todayKey = dayNames[new Date().getDay()];
+          state.weeklyHours[todayKey] = Math.round(((state.weeklyHours[todayKey] || 0) + timerMinutes / 60) * 10) / 10;
+          fireConfetti();
+          saveState();
+          timerSecondsLeft = timerMinutes * 60;
+          updateTimerUI();
         }
-        updateTimerUI();
-      });
+      }, 1000);
+    }
 
-      document.getElementById('btn-timer-reset').addEventListener('click', () => {
-        clearInterval(timerInterval);
-        timerRunning = false;
-        timerSecondsLeft = timerPresetMinutes * 60;
-        updateTimerUI();
-      });
+    function resetTimer() {
+      setTimerPreset(timerMinutes);
+    }
 
-      // ==================== 8. EXPORT / IMPORT JSON BACKUP ====================
+    // =========================================================================
+    // JSON EXPORT / IMPORT & UTILS
+    // =========================================================================
+    function exportData() {
+      const blob = new Blob([JSON.stringify(state, null, 2)], { type: 'application/json' });
+      const a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = `ai-mlops-2027-backup-${new Date().toISOString().slice(0, 10)}.json`;
+      a.click();
+    }
 
-      document.getElementById('btn-export-json').addEventListener('click', () => {
-        const blob = new Blob([JSON.stringify(state, null, 2)], { type: 'application/json' });
-        const url = URL.createObjectURL(blob);
-        const a = document.createElement('a');
-        a.href = url;
-        a.download = `ai-mlops-2027-backup-${getTodayDateString()}.json`;
-        document.body.appendChild(a);
-        a.click();
-        a.remove();
-        URL.revokeObjectURL(url);
-        showToast('Backup Exported!', 'Save this JSON file to sync across devices.', 'cyan');
-      });
-
-      const importInput = document.getElementById('import-file-input');
-      document.getElementById('btn-import-json').addEventListener('click', () => importInput.click());
-      importInput.addEventListener('change', (e) => {
-        const file = e.target.files[0];
-        if (!file) return;
-        const reader = new FileReader();
-        reader.onload = (ev) => {
-          try {
-            const parsed = JSON.parse(ev.target.result);
-            state = mergeStateWithDefaults(parsed);
-            previousLevel = computeMetrics().level;
-            saveAndRender(true);
-            showToast('Backup Restored!', 'Your progress has been imported successfully.', 'emerald');
-          } catch (err) {
-            showToast('Import Failed', 'Invalid JSON backup file.', 'amber');
-          } finally {
-            importInput.value = '';
-          }
-        };
-        reader.readAsText(file);
-      });
-
-      // ==================== 9. NAVIGATION & EVENTS ====================
-
-      document.querySelectorAll('.nav-tab').forEach(tabBtn => {
-        tabBtn.addEventListener('click', () => {
-          activeTab = tabBtn.dataset.tab;
-          document.querySelectorAll('.nav-tab').forEach(b => {
-            b.className = 'nav-tab flex items-center gap-2 px-4 py-2.5 text-xs sm:text-sm font-medium whitespace-nowrap border-b-2 border-transparent text-slate-400 hover:text-slate-200 transition cursor-pointer';
-          });
-          tabBtn.className = 'nav-tab active flex items-center gap-2 px-4 py-2.5 text-xs sm:text-sm font-semibold whitespace-nowrap border-b-2 border-indigo-400 text-indigo-300 transition cursor-pointer';
-
-          document.querySelectorAll('.tab-panel').forEach(p => p.classList.add('hidden'));
-          document.getElementById(`tab-${activeTab}`).classList.remove('hidden');
-        });
-      });
-
-      function handleCheckIn() {
-        const today = getTodayDateString();
-        if (state.lastActiveDate === today) {
-          showToast('Streak Active!', `Already checked in today (${state.streak} day streak).`, 'amber');
-        } else {
-          saveAndRender();
-          showToast('Daily Check-In Recorded!', `Streak is now ${state.streak} day(s).`, 'amber');
+    function importData(event) {
+      const file = event.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = e => {
+        try {
+          const imported = JSON.parse(e.target.result);
+          state = { ...defaultState(), ...imported };
+          saveState(false);
+          alert('Backup restored successfully!');
+        } catch {
+          alert('Invalid backup JSON file.');
         }
-      }
-      document.getElementById('btn-checkin').addEventListener('click', handleCheckIn);
-      document.getElementById('btn-checkin-mobile').addEventListener('click', handleCheckIn);
+      };
+      reader.readAsText(file);
+    }
 
-      document.getElementById('btn-reset-week').addEventListener('click', () => {
-        openConfirmModal(
-          'Start a New Study Week?',
-          'This archives your current week (incrementing weeks completed if hours were logged) and resets all daily hours back to 0.0h.',
-          () => {
-            const logged = WEEKLY_SCHEDULE.reduce((s, d) => s + (Number(state.weeklyHours[d.id]) || 0), 0);
-            if (logged > 0) state.weeksCompleted = (state.weeksCompleted || 0) + 1;
-            WEEKLY_SCHEDULE.forEach(d => { state.weeklyHours[d.id] = 0; });
-            showToast('New Week Initialized!', 'Daily hours reset to 0.0h. Target: 9.5 hrs!', 'cyan');
-            saveAndRender();
-          }
-        );
-      });
+    function escapeHtml(str) {
+      return String(str).replace(/[&<>"']/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[m]));
+    }
 
-      // Quest Filters
-      document.querySelectorAll('.quest-filter-btn').forEach(btn => {
-        btn.addEventListener('click', () => {
-          questFilter = btn.dataset.filter;
-          questModuleFilter = 'all';
-          document.getElementById('quest-module-select').value = 'all';
-          document.querySelectorAll('.quest-filter-btn').forEach(b => {
-            b.className = 'quest-filter-btn px-3 py-1.5 rounded-xl text-xs font-medium bg-slate-800/80 text-slate-400 border border-slate-700/60 hover:text-white cursor-pointer';
-          });
-          btn.className = 'quest-filter-btn active px-3 py-1.5 rounded-xl text-xs font-semibold bg-indigo-500/20 text-indigo-300 border border-indigo-500/50 cursor-pointer';
-          renderQuests();
-          lucide.createIcons();
-        });
-      });
+    function escapeAttr(str) {
+      return String(str).replace(/"/g, '&quot;');
+    }
 
-      document.getElementById('quest-module-select').addEventListener('change', (e) => {
-        questModuleFilter = e.target.value;
-        if (questModuleFilter !== 'all') expandedModules[questModuleFilter] = true;
-        renderQuests();
-        lucide.createIcons();
-      });
-
-      // Job Application Add Form
-      document.getElementById('job-add-form').addEventListener('submit', (e) => {
-        e.preventDefault();
-        const company = document.getElementById('job-company-input').value.trim();
-        const role = document.getElementById('job-role-input').value.trim();
-        const status = document.getElementById('job-status-input').value;
-        if (!company || !role) return;
-
-        state.jobApplications.unshift({
-          id: 'app_' + Date.now(),
-          company,
-          role,
-          status,
-          date: getTodayDateString()
-        });
-        document.getElementById('job-company-input').value = '';
-        document.getElementById('job-role-input').value = '';
-        if (status === 'Offer') fireConfetti(140);
-        showToast('Application Added!', `${company} — ${role}`, 'indigo');
-        saveAndRender();
-      });
-
-      // Global Delegated Clicks
-      document.addEventListener('click', (e) => {
-        const hourBtn = e.target.closest('.hour-step-btn');
-        if (hourBtn) {
-          const day = hourBtn.dataset.day;
-          const delta = parseFloat(hourBtn.dataset.delta);
-          state.weeklyHours[day] = Math.max(0, Math.min(16, Number(((state.weeklyHours[day] || 0) + delta).toFixed(2))));
-          saveAndRender();
-          return;
-        }
-
-        const modBtn = e.target.closest('.module-toggle-btn');
-        if (modBtn) {
-          const mid = modBtn.dataset.moduleToggle;
-          expandedModules[mid] = !expandedModules[mid];
-          renderQuests();
-          lucide.createIcons();
-          return;
-        }
-
-        const delAppBtn = e.target.closest('.job-delete-btn');
-        if (delAppBtn) {
-          const id = delAppBtn.dataset.appDelete;
-          state.jobApplications = state.jobApplications.filter(a => a.id !== id);
-          saveAndRender(true);
-          return;
-        }
-
-        const certBtn = e.target.closest('.cert-status-btn');
-        if (certBtn) {
-          const cid = certBtn.dataset.certId;
-          const nextStatus = certBtn.dataset.status;
-          const prevStatus = state.certs[cid].status;
-          state.certs[cid].status = nextStatus;
-
-          if (nextStatus === 'passed' && prevStatus !== 'passed') {
-            if (!state.certs[cid].date) state.certs[cid].date = getTodayDateString();
-            const certObj = CERTIFICATIONS.find(c => c.id === cid);
-            fireConfetti(130);
-            showToast('CERTIFICATION UNLOCKED! +1,000 XP', `${certObj.provider} ${certObj.code} — ${certObj.name}`, 'amber');
-          }
-          saveAndRender();
-          return;
-        }
-      });
-
-      // Global Delegated Changes
-      document.addEventListener('change', (e) => {
-        if (e.target.classList.contains('quest-checkbox')) {
-          const qid = e.target.dataset.questId;
-          state.quests[qid] = e.target.checked;
-          if (e.target.checked) showToast('Quest Completed! +100 XP', 'Keep stacking momentum.', 'cyan');
-          saveAndRender();
-          return;
-        }
-
-        if (e.target.classList.contains('job-status-select')) {
-          const appId = e.target.dataset.appId;
-          const nextStatus = e.target.value;
-          const app = state.jobApplications.find(a => a.id === appId);
-          if (app) {
-            app.status = nextStatus;
-            if (nextStatus === 'Offer') {
-              fireConfetti(150);
-              showToast('OFFER RECEIVED!', `Congrats on the offer from ${app.company}!`, 'emerald');
-            }
-            saveAndRender();
-          }
-          return;
-        }
-
-        if (e.target.classList.contains('project-gate-cb')) {
-          const pid = e.target.dataset.projId;
-          const gate = e.target.dataset.gate;
-          const wasDeployed = isProjectDeployed(state.projects[pid]);
-          state.projects[pid].gates[gate] = e.target.checked;
-          const nowDeployed = isProjectDeployed(state.projects[pid]);
-
-          if (!wasDeployed && nowDeployed) {
-            const proj = PROJECTS.find(p => p.id === pid);
-            fireConfetti(120);
-            showToast('PROJECT DEPLOYED! +500 XP', `${proj.name} cleared all 5 3-YOE quality gates!`, 'emerald');
-          }
-          saveAndRender();
-          return;
-        }
-
-        if (e.target.classList.contains('fund-checkbox')) {
-          const fid = e.target.dataset.fundId;
-          state.fundamentals[fid] = e.target.checked;
-          if (e.target.checked) showToast('Shield Reinforced! +50 XP', 'One less interview blind spot.', 'indigo');
-          saveAndRender();
-          return;
-        }
-
-        if (e.target.classList.contains('project-meta-input')) {
-          const pid = e.target.dataset.projId;
-          const field = e.target.dataset.field;
-          state.projects[pid][field] = e.target.value.trim();
-          saveAndRender(true);
-          return;
-        }
-
-        if (e.target.classList.contains('cert-meta-input')) {
-          const cid = e.target.dataset.certId;
-          const field = e.target.dataset.field;
-          state.certs[cid][field] = e.target.value.trim();
-          saveAndRender(true);
-          return;
-        }
-      });
-
-      // ==================== 10. BOOTSTRAP ====================
-      window.addEventListener('load', () => {
-        previousLevel = computeMetrics().level;
-        updateTimerUI();
-        renderAll();
-      });
-    })();
+    // Initialize
+    switchTab('overview');
+    renderAll();
+    updateTimerUI();
   </script>
 </body>
 </html>
